@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Chart Example</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  </head>
+  <body>
+    <table border="1">
+      <tr>
+        <th>ID</th>
+        <th>Sensor Value</th>
+      </tr>
+      <tr>
+        <td id="id1"></td>
+        <td id="sensorValue1"></td>
+      </tr>
+      <tr>
+        <td id="id2"></td>
+        <td id="sensorValue2"></td>
+      </tr>
+      <tr>
+        <td id="id3"></td>
+        <td id="sensorValue3"></td>
+      </tr>
+    </table>
+    <button onclick="deleteData()">Delete Data</button>
+
+    <canvas id="myChart" width="400" height="200"></canvas>
+  </body>
+  <script src="scripts/graph.js"></script>
+  <script>
+    function deleteData() {
+      fetch("/data", {
+        method: "DELETE",
+      }).then(() => {
+        slcDataToTable();
+      });
+      fetch("/data/" + id, {
+        method: "DELETE",
+      }).then(() => {
+        slcDataToTable();
+      });
+    }
+
+    function deleteDataById(id) {
+      fetch("/data/" + id, {
+        method: "DELETE",
+      }).then(() => {
+        slcDataToTable();
+      });
+    }
+
+    function slcDataToTable() {
+      fetch("/data")
+        .then((response) => response.json())
+        .then((data) => {
+          const ids = data.map((row) => row.id);
+          const sensorValues = data.map((row) => parseFloat(row.sensor_value));
+          console.log(ids, sensorValues);
+          let a = sensorValues.length;
+          for (let i = 1; i <= 3; i++) {
+            document.getElementById("id" + i).innerText = ids[a - i];
+            document.getElementById("sensorValue" + i).innerText =
+              sensorValues[a - i];
+          }
+        });
+    }
+    slcDataToTable();
+    setInterval(slcDataToTable, 1000);
+  </script>
+</html>

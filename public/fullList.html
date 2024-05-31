@@ -1,0 +1,42 @@
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Chart Example</title>
+    </head>
+    <body>
+        <table border="1">
+            <tr>
+                <th>ID</th>
+                <th>Sensor Value</th>
+            </tr>
+ 
+    </body>
+    <script>
+
+        function fullDataToTable() {
+            fetch("/data")
+                .then((response) => response.json())
+                .then((data) => {
+                    const ids = data.map((row) => row.id);
+                    const sensorValues = data.map((row) => parseFloat(row.sensor_value));
+                    console.log(ids, sensorValues);
+
+                    const table = document.querySelector("table");
+                    for (let i = 0; i < ids.length; i++) {
+                        const row = document.createElement("tr");
+                        const idCell = document.createElement("td");
+                        const sensorValueCell = document.createElement("td");
+                        idCell.textContent = ids[i];
+                        sensorValueCell.textContent = sensorValues[i];
+                        row.appendChild(idCell);
+                        row.appendChild(sensorValueCell);
+                        table.appendChild(row);
+                    }
+                });
+        }
+        fullDataToTable();
+    </script>
+</html>
