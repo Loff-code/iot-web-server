@@ -3,6 +3,7 @@ error_reporting(E_ALL);
 ini_set('display_errors', 1);
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $sensorData = $_POST['sensor_data'];
+    $timestamp = $_POST['timestamp'];
 
     // Insert sensor data into MySQL database
     $servername = "localhost";
@@ -22,6 +23,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     // Get sensor data from POST request
     $sensorData = $_POST['sensor_data'];
+    
 
     // Prepare SQL statement
     $sql = "INSERT INTO sensor_data (sensor_value) VALUES (?)";

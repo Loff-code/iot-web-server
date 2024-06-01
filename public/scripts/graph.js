@@ -1,5 +1,4 @@
 initChart();
-
 updChart();
 setInterval(updChart, 1000);
 // slcDataToTable();
@@ -80,4 +79,22 @@ function slcDataToTable() {
         table.appendChild(row);
       }
     });
+}
+
+function downloadData() {
+  fetch("/data")
+    .then((response) => response.json())
+    .then((data) => {
+      // Convert data to CSV format
+      const csv = data.map((row) => Object.values(row).join(",")).join("\n");
+
+      // Create a temporary anchor element
+      const link = document.createElement("a");
+      link.href = "data:text/csv;charset=utf-8," + encodeURIComponent(csv);
+      link.download = "data.csv";
+
+      // Trigger the download
+      link.click();
+    })
+    .catch((error) => console.error("Error fetching data:", error));
 }
