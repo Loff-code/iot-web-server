@@ -27,14 +27,17 @@ app.use(express.static(path.join(__dirname, "public")));
 
 // Endpoint to get data from MySQL
 app.get("/data", (req, res) => {
-  db.query("SELECT id, sensor_value FROM sensor_data", (err, results) => {
-    if (err) {
-      console.error("Error executing SQL query:", err);
-      res.status(500).send("Error executing SQL query");
-      return;
+  db.query(
+    "SELECT id, sensor_value, coolState, time_stamp FROM sensor_data",
+    (err, results) => {
+      if (err) {
+        console.error("Error executing SQL query:", err);
+        res.status(500).send("Error executing SQL query");
+        return;
+      }
+      res.json(results);
     }
-    res.json(results);
-  });
+  );
 });
 
 // Serve index.html at the root URL

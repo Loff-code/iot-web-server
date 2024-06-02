@@ -7,67 +7,83 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   </head>
   <body>
-    <table border="1">
-      <tr>
-        <th>ID</th>
-        <th>Sensor Value</th>
-      </tr>
-      <tr>
-        <td id="id1"></td>
-        <td id="sensorValue1"></td>
-      </tr>
-      <tr>
-        <td id="id2"></td>
-        <td id="sensorValue2"></td>
-      </tr>
-      <tr>
-        <td id="id3"></td>
-        <td id="sensorValue3"></td>
-      </tr>
-    </table>
+    <table id="dataTable" border="1"></table>
     <button onclick="deleteData()">Delete Data</button>
     <button onclick="downloadData()">Download the Data</button>
     <canvas id="myChart" width="400" height="200"></canvas>
-  </body>
-  <script src="scripts/graph.js"></script>
-  <script>
-    function deleteData() {
-      fetch("/data", {
-        method: "DELETE",
-      }).then(() => {
-        slcDataToTable();
-      });
-      fetch("/data/" + id, {
-        method: "DELETE",
-      }).then(() => {
-        slcDataToTable();
-      });
-    }
 
-    function deleteDataById(id) {
-      fetch("/data/" + id, {
-        method: "DELETE",
-      }).then(() => {
-        slcDataToTable();
-      });
-    }
-
-    function slcDataToTable() {
-      fetch("/data")
-        .then((response) => response.json())
-        .then((data) => {
-          const ids = data.map((row) => row.id);
-          const sensorValues = data.map((row) => parseFloat(row.sensor_value));
-          console.log(ids, sensorValues);
-          let a = sensorValues.length;
-          for (let i = 1; i <= 3; i++) {
-            document.getElementById("id" + i).innerText = ids[a - i];
-            document.getElementById("sensorValue" + i).innerText =
-              sensorValues[a - i];
-          }
+    <script src="scripts/graph.js"></script>
+    <script>
+      function deleteData() {
+        fetch("/data", {
+          method: "DELETE",
+        }).then(() => {
+          slcDataToTable();
         });
-    }
-    slcDataToTable();
-    setInterval(slcDataToTable, 1000);
-  </script>
+      }
+
+      function deleteDataById(id) {
+        fetch("/data/" + id, {
+          method: "DELETE",
+        }).then(() => {
+          slcDataToTable();
+        });
+      }
+
+      function addHeader(tableId, dataNames) {
+        const table = document.getElementById(tableId);
+        const header = table.createTHead();
+        const row = header.insertRow(0);
+        dataNames.forEach((text) => {
+          const cell = document.createElement("th");
+          cell.innerText = text;
+          row.appendChild(cell);
+        });
+      }
+
+      function addRow(tableId, data, rowIndex) {
+        const table = document.getElementById(tableId);
+        const row = table.insertRow(-1);
+        data.forEach((value, index) => {
+          const cell = row.insertCell(index);
+          cell.innerText = value[value.length - rowIndex];
+        });
+      }
+
+      function slcDataToTable() {
+        fetch("/data")
+          .then((response) => response.json())
+          .then((data) => {
+            const table = document.getElementById("dataTable");
+            table.innerHTML = ""; // Clear existing table content
+
+            const ids = data.map((row) => row.id);
+            const sensorValues = data.map((row) => row.sensor_value);
+            let time_stamp = data.map((row) => row.time_stamp);
+            time_stamp = time_stamp.map((row) =>
+              row.slice(0, 19).replace("T", " ")
+            );
+            const coolState = data.map((row) => row.coolState);
+
+            const rowData = [ids, sensorValues, time_stamp, coolState];
+            const dataNames = [
+              "ID",
+              "Sensor Value",
+              "Time Stamp",
+              "Cool State",
+            ];
+
+            addHeader("dataTable", dataNames);
+
+            let a = sensorValues.length;
+            for (let i = 1; i <= 3; i++) {
+              addRow("dataTable", rowData, i);
+            }
+          });
+      }
+
+      slcDataToTable();
+      setInterval(slcDataToTable, 1000);
+    </script>
+  </body>
 </html>
