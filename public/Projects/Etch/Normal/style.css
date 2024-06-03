@@ -1,0 +1,10 @@
+div {
+  background-color: aqua;
+}
+.box02 {
+  background-color: black;
+}
+div:hover {
+  background: #ffffff;
+  background-color: black;
+}

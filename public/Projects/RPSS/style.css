@@ -1,0 +1,26 @@
+h1 {
+  color: rgb(17, 0, 255);
+  font-size: 40px;
+}
+div {
+  background-color: lemonchiffon;
+  padding: 40px;
+  border-radius: 400px;
+  text-align: center;
+  margin: 10px 40px 40px 40px;
+}
+
+button {
+  background-color: lightgreen;
+  padding: 10px 20px;
+  border-radius: 10px;
+  font-size: 20px;
+  cursor: pointer;
+  display: inline;
+}
+
+p {
+  font-size: 20px;
+  color: blue;
+  font-weight: bold;
+}

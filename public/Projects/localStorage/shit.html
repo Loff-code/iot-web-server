@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      if (typeof localStorage !== "undefined") {
+        const userObj = {
+          username: "Maria",
+          email: "maria@mail.com",
+        };
+
+        localStorage.setItem("user", JSON.stringify(userObj));
+        alert("completed");
+      } else {
+        console.log("localStorage is not supported in this browser.");
+        alert("gay shit isn't working");
+      }
+      const storedUserData = localStorage.getItem("user");
+
+      if (storedUserData) {
+        const userData = JSON.parse(storedUserData);
+        alert(userData.username);
+        window.userData = userData; // Expose userData globally
+        // You can use userData here...
+      } else {
+        console.log("User data not found in local storage");
+      }
+    </script>
+  </body>
+</html>

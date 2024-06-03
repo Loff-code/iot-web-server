@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Link 2 Download</title>
+    <link rel="stylesheet" href="/Style/style.css" />
+    <style>
+      p {
+        font-size: 20px;
+        font-weight: bold;
+        margin: auto;
+      }
+    </style>
+    <script src="/Script/header.js"></script>
+  </head>
+  <body>
+    <header-component></header-component>
+    <h1>Turn your google drive link into an instant download link</h1>
+
+    <div class="container">
+      <div class="input">
+        <input
+          type="text"
+          id="linkInput"
+          class="linkBox"
+          placeholder="Drive Link, ex. https://drive.google.com/file/d/1c4lPg9eN9Qqm0cPcLDdUyVXuhpTZSpnc/view"
+          onkeydown="pressEvent(event)"
+        />
+      </div>
+      <div class="button">
+        <button class="linkButton" onclick="displayLink() ">
+          Get Download Link
+        </button>
+      </div>
+
+      <div class="box">
+        <input
+          type="text"
+          id="linkOutput"
+          class="linkBox"
+          placeholder="Output Link"
+        />
+        <button class="linkButton" onclick="copyToClipboard()">Copy</button>
+      </div>
+      <div id="displayArea"></div>
+    </div>
+
+    <script src="/Script/heading.js"></script>
+  </body>
+</html>

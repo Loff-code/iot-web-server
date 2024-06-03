@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Unit Converter</title>
+    <link rel="stylesheet" href="/Style/style.css" />
+    <script src="/Script/header.js"></script>
+  </head>
+  <body>
+    <header-component></header-component>
+    <h1>Metric/Imerial Unit Converter</h1>
+    <h3>Choose units to convert</h3>
+    <input
+      type="number"
+      id="metricInput"
+      class="unitBox"
+      placeholder="Metric"
+      onkeydown="pressEvent(event)"
+    />
+    <select name="" id="metricSelect">
+      <option value="millimeter">millimeter</option>
+      <option value="centimeter">centimeter</option>
+      <option value="decimeter">decimeter</option>
+      <option value="meter">meter</option>
+      <option selected value="kilometer">kilometer</option>
+    </select>
+    <select name="" id="imperialSelect">
+      <option value="inches">inches</option>
+      <option value="feet">feet</option>
+      <option value="yards">yards</option>
+      <option selected value="yards">miles</option>
+    </select>
+    <input
+      type="number"
+      id="imperialInput"
+      class="unitBox"
+      placeholder="Imperial"
+      onkeydown="pressEvent(event)"
+    />
+    <button>Convert</button>
+
+    <script src="/Script/heading.js"></script>
+  </body>
+</html>

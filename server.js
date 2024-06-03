@@ -28,7 +28,8 @@ app.use(express.static(path.join(__dirname, "public")));
 // Endpoint to get data from MySQL
 app.get("/data", (req, res) => {
   db.query(
-    "SELECT id, sensor_value, coolState, time_stamp FROM sensor_data",
+    "SELECT * FROM sensor_data",
+    // "SELECT id, sensor_value, coolState, time_stam  FROM sensor_data",
     (err, results) => {
       if (err) {
         console.error("Error executing SQL query:", err);

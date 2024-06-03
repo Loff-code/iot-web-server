@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <style>
+      .prime {
+        background: aquamarine;
+        border: 4px solid green;
+        height: 500px;
+      }
+      .flex-container {
+        display: flex;
+        flex-direction: column;
+        margin: 20px;
+        background: rgb(0, 102, 255);
+        border: blue 4px solid;
+      }
+      .two {
+        display: flex;
+      }
+      .third {
+        background: lightcoral;
+        border: 4px solid red;
+        height: 100px;
+
+        margin: 20px;
+      }
+
+      /* this selector selects all divs inside of .flex-container */
+      .flex-container div {
+        background: peachpuff;
+        border: 4px solid brown;
+        height: 100px;
+      }
+    </style>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div class="prime">
+      <div class="flex-container">
+        <div class="third"></div>
+        <div class="third"></div>
+        <div class="third"></div>
+      </div>
+    </div>
+  </body>
+</html>

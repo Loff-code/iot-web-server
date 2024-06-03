@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>File Uploader</title>
+    <link rel="stylesheet" href="/Style/style.css" />
+  </head>
+  <body>
+    <header-component></header-component>
+    <h2>File Upload Form</h2>
+    <form id="uploadForm" enctype="multipart/form-data">
+      <label for="fileToUpload">Select image to upload:</label>
+      <input type="file" name="fileToUpload" id="fileToUpload" required />
+      <br />
+      <input type="button" value="Upload Image" onclick="uploadFile()" />
+    </form>
+
+    <div id="uploadStatus"></div>
+
+    <script src="/Script/Upload.js"></script>
+    <script src="/Script/heading.js"></script>
+  </body>
+</html>

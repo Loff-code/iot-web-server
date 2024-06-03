@@ -5,14 +5,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Chart Example</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="/Style/style.css" />
   </head>
+  <header-component></header-component>
   <body>
     <table id="dataTable" border="1"></table>
-    <button onclick="deleteData()">Delete Data</button>
-    <button onclick="downloadData()">Download the Data</button>
+    <div class="button-container">
+      <button onclick="deleteData()">Delete Data</button>
+      <button onclick="downloadData()">Download the Data</button>
+    </div>
     <canvas id="myChart" width="400" height="200"></canvas>
 
-    <script src="scripts/graph.js"></script>
+    <script src="Script/graph.js"></script>
     <script>
       function deleteData() {
         fetch("/data", {
@@ -85,5 +89,6 @@
       slcDataToTable();
       setInterval(slcDataToTable, 1000);
     </script>
+    <script src="/Script/heading.js"></script>
   </body>
 </html>

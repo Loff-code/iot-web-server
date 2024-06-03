@@ -86,8 +86,15 @@ function downloadData() {
     .then((response) => response.json())
     .then((data) => {
       // Convert data to CSV format
-      const csv = data.map((row) => Object.values(row).join(",")).join("\n");
-
+      // const csv = data.map((row) => Object.values(row).join(",")).join("\n");
+      const csv = data
+        .map((row) => {
+          let time_stamp = row.time_stamp.slice(0, 19).replace("T", " ");
+          const values = Object.values(row);
+          values[3] = time_stamp;
+          return values.join(",");
+        })
+        .join("\n");
       // Create a temporary anchor element
       const link = document.createElement("a");
       link.href = "data:text/csv;charset=utf-8," + encodeURIComponent(csv);
@@ -98,3 +105,12 @@ function downloadData() {
     })
     .catch((error) => console.error("Error fetching data:", error));
 }
+
+// const csv = data
+// .map((row) => {
+//   let time_stamp = row.time_stamp.slice(0, 19).replace("T", " ");
+//   const values = Object.values(row);
+//   values[3] = time_stamp;
+//   return values.join(",");
+// })
+// .join("\n");

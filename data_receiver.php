@@ -2,6 +2,7 @@
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    // Get sensor data from POST request
     $sensorData = $_POST['sensor_data'];
     $coolState = $_POST['coolState'];
   
@@ -22,10 +23,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         die("Database connection failed: " . $conn->connect_error);
     }
 
-    // Get sensor data from POST request
-    $sensorData = $_POST['sensor_data'];
-    $coolState = $_POST['coolState'];
-    
 
     // Prepare SQL statement
     $sql = "INSERT INTO sensor_data (sensor_value, coolState) VALUES (?, ?)";
@@ -37,6 +34,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 
     // Bind parameters and execute statement
+    // "ss" means the parameters are strings
     $stmt->bind_param("ss", $sensorData, $coolState);
     $result = $stmt->execute();
 
