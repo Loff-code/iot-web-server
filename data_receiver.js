@@ -2,51 +2,53 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const mysql = require("mysql2");
 
-const app = express();
-const port = 2000;
+// Create an instance of Express
+const app1 = express();
 
-// Middleware to parse JSON body
-app.use(bodyParser.json());
+// Use body-parser middleware to parse URL-encoded request bodies
+app1.use(bodyParser.urlencoded({ extended: true }));
 
-// MySQL database connection
-const db = mysql.createConnection({
+// Database configuration
+const dbConfig = {
   host: "localhost",
   user: "example_user",
   password: "9Lesbians!",
   database: "mydatabase",
-});
+};
 
-// Connect to MySQL
-db.connect((err) => {
-  if (err) {
-    console.error("Database connection failed: " + err.stack);
-    return;
-  }
-  console.log("Connected to database");
-});
+// Create a MySQL connection pool
+const pool = mysql.createPool(dbConfig);
 
-// Route for handling POST requests
-app.post("/", (req, res) => {
-  // Check if sensor_data exists in the request body
-  if (!req.body || !req.body.sensor_data) {
-    return res.status(400).send("Invalid data format");
-  }
-
+// Route to handle POST requests
+app1.post("/data_receiver", (req, res) => {
   const sensorData = req.body.sensor_data;
+  let coolState = req.body.coolState;
 
-  // Insert sensor data into MySQL database
-  const sql = "INSERT INTO sensor_data (sensor_value) VALUES (?)";
-  db.query(sql, [sensorData], (err, result) => {
-    if (err) {
-      console.error("Error executing SQL statement: " + err.message);
-      return res.status(500).send("Error executing SQL statement");
+  // Debugging: Log received data
+  console.log("Received sensor_data:", sensorData);
+  console.log("Received coolState:", coolState);
+
+  if (!sensorData || coolState === undefined) {
+    return res.status(400).send("Invalid request");
+  }
+
+  // Convert coolState to an integer (1 or 0)
+  coolState = coolState === "true";
+
+  const sql = "INSERT INTO sensor_data (sensor_value, coolState) VALUES (?, ?)";
+
+  pool.query(sql, [sensorData, coolState], (error, results) => {
+    if (error) {
+      console.error("Error executing SQL statement:", error);
+      return res.status(500).send("Database error: " + error.message);
     }
-    console.log("Sensor data inserted successfully");
+
     res.status(200).send("Sensor data inserted successfully");
   });
 });
 
-// Start server
-app.listen(port, () => {
-  console.log(`Server listening at http://localhost:${port}`);
+// Start the server
+const PORT = 3000;
+app1.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
 });
