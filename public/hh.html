@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Control Lights</title>
+    <style>
+      /* Initial styles for checkboxes */
+      .checkbox-container {
+        display: flex;
+        align-items: center;
+        margin-right: 10px;
+      }
+
+      .checkbox-container input[type="checkbox"] {
+        width: 60px;
+        height: 30px;
+        appearance: none;
+        background-color: blue;
+        cursor: pointer;
+        border: 1px solid #000;
+        position: relative;
+      }
+
+      .checkbox-container input[type="checkbox"]::after {
+        content: attr(data-label);
+        color: white;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        font-size: 12px;
+      }
+
+      /* Styles for checked checkboxes */
+      .checkbox-container input[type="checkbox"]:checked#red {
+        background-color: red;
+      }
+
+      .checkbox-container input[type="checkbox"]:checked#yellow {
+        background-color: yellow;
+        color: black;
+      }
+
+      .checkbox-container input[type="checkbox"]:checked#green {
+        background-color: green;
+      }
+    </style>
+  </head>
+  <body>
+    <h3>Control Lights</h3>
+    <form id="lightForm" style="display: flex; flex-direction: row">
+      <div class="checkbox-container">
+        <label for="red">Red:</label>
+        <input
+          onclick="sendRequest()"
+          type="checkbox"
+          id="red"
+          name="red"
+          value="1"
+          data-label="Red"
+        />
+      </div>
+      <div class="checkbox-container">
+        <label for="yellow">Yellow:</label>
+        <input
+          onclick="sendRequest()"
+          type="checkbox"
+          id="yellow"
+          name="yellow"
+          value="1"
+          data-label="Yellow"
+        />
+      </div>
+      <div class="checkbox-container">
+        <label for="green">Green:</label>
+        <input
+          onclick="sendRequest()"
+          type="checkbox"
+          id="green"
+          name="green"
+          value="1"
+          data-label="Green"
+        />
+      </div>
+    </form>
+    <!-- <button type="button" onclick="sendRequest()">Send</button> -->
+
+    <script>
+      function sendRequest() {
+        const formData = new FormData(document.getElementById("lightForm"));
+
+        // Ensure unchecked checkboxes are set to 0
+        if (!formData.has("red")) formData.append("red", "0");
+        if (!formData.has("yellow")) formData.append("yellow", "0");
+        if (!formData.has("green")) formData.append("green", "0");
+
+        fetch("http://192.168.1.131:4000/light_receiver", {
+          method: "POST",
+          body: new URLSearchParams(formData),
+        })
+          .then((response) => response.text())
+          .then((data) => {
+            console.log("Success:", data);
+          })
+          .catch((error) => {
+            console.error("Error:", error);
+          });
+      }
+    </script>
+  </body>
+</html>

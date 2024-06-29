@@ -104,10 +104,10 @@ input {
   box-shadow: 0 2px 3px 0px #1f4579;
   transition: background 200ms;
 }
-input::after {
+/* input::after {
   margin-top: 5px;
   color: #888;
-}
+} */
 .linkBox {
   display: block;
   font-family: "Roboto Condensed", sans-serif;

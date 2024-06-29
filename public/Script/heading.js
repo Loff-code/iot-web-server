@@ -10,7 +10,12 @@ headerTemplate.innerHTML = `
       <a href="/index.html" class="logo-link">
         <img class="logo-img" src="/images/Logo.png" alt="Logo" />
       </a>
-
+      <div class="dropdown">
+      <button class="dropbtn"></button>
+      <div class="dropdown-content">
+        <a class="download" href="/Pages/Downloads.htm  Scrapers ScrapersScrapersl">æææ</a>
+        </div>
+    </div>
       <div class="dropdown">
         <button class="dropbtn"></button>
         <div class="dropdown-content">

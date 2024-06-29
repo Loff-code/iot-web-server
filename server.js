@@ -38,7 +38,27 @@ app.get("/data", (req, res) => {
       return;
     }
     res.json(results);
+    // console.log("All data:", results);
   });
+});
+
+app.get("/state", (req, res) => {
+  db.query(
+    "SELECT * FROM light_state ORDER BY id DESC LIMIT 1",
+    (err, results) => {
+      if (err) {
+        console.error("Error executing SQL query:", err);
+        res.status(500).send("Error executing SQL query");
+        return;
+      }
+      results =
+        String(results[0].red) +
+        String(results[0].yellow) +
+        String(results[0].green);
+      res.json(results);
+      // console.log("Last coolState:", results);
+    }
+  );
 });
 
 // Serve index.html at the root URL
@@ -69,11 +89,14 @@ app.delete("/data", (req, res) => {
 app.post("/data_receiver", (req, res) => {
   const sensorData = req.body.sensor_data;
   let coolState = req.body.coolState;
+  let time_stamp = req.body.time_stamp;
+  let date_stamp = req.body.date_stamp;
 
   // Debugging: Log received data
   console.log("Received sensor_data:", sensorData);
   console.log("Received coolState:", coolState);
-
+  console.log("Received time_stamp:", time_stamp);
+  console.log("Received date_stamp:", date_stamp);
   if (!sensorData || coolState === undefined) {
     return res.status(400).send("Invalid request");
   }
@@ -81,19 +104,48 @@ app.post("/data_receiver", (req, res) => {
   // Convert coolState to an integer (1 or 0)
   coolState = coolState === "true";
 
-  const sql = "INSERT INTO sensor_data (sensor_value, coolState) VALUES (?, ?)";
+  const sql =
+    "INSERT INTO sensor_data (sensor_value, coolState, time_stamp, date_stamp) VALUES (?, ?, ?, ?)";
 
-  db.query(sql, [sensorData, coolState], (error, results) => {
+  db.query(
+    sql,
+    [sensorData, coolState, time_stamp, date_stamp],
+    (error, results) => {
+      if (error) {
+        console.error("Error executing SQL statement:", error);
+        return res.status(500).send("Database error: " + error.message);
+      }
+
+      res.status(200).send("Sensor data inserted successfully");
+    }
+  );
+});
+app.post("/light_receiver", (req, res) => {
+  let red = req.body.red;
+  let yellow = req.body.yellow;
+  let green = req.body.green;
+
+  // Debugging: Log received data
+  console.log("Received red:", red);
+  console.log("Received yellow:", yellow);
+  console.log("Received green:", green);
+
+  if (!red || !yellow || !green) {
+    return res.status(400).send("Invalid request");
+  }
+  const sql = "INSERT INTO light_state (red, yellow, green) VALUES (?, ?, ?)";
+  db.query(sql, [red, yellow, green], (error, results) => {
     if (error) {
       console.error("Error executing SQL statement:", error);
       return res.status(500).send("Database error: " + error.message);
     }
-
-    res.status(200).send("Sensor data inserted successfully");
+    res.status(200).send("Light state inserted successfully");
   });
 });
 
 // Start server
 app.listen(port, () => {
-  console.log(`Server listening at http://localhost:${port}`);
+  console.log(
+    `Server listening at http://192.168.1.131:${port} or http://localhost:${port}`
+  );
 });
