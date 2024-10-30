@@ -175,6 +175,6 @@ app.post("/frq_receiver", (req, res) => {
 // Start server
 app.listen(port, () => {
   console.log(
-    `Server listening at http://192.168.1.131:${port} or http://localhost:${port}`
+    `Server listening at http://192.168.1.240:${port} or http://localhost:${port}`
   );
 });
