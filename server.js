@@ -4,7 +4,7 @@ const path = require("path");
 const bodyParser = require("body-parser");
 
 const app = express();
-const port = 4000;
+const port = 80;
 
 // MySQL database connection
 const db = mysql.createConnection({
@@ -60,7 +60,18 @@ app.get("/state", (req, res) => {
     }
   );
 });
-
+app.get("/frq", (req, res) => {
+  db.query("SELECT * FROM freq ORDER BY id DESC LIMIT 1", (err, results) => {
+    if (err) {
+      console.error("Error executing SQL query:", err);
+      res.status(500).send("Error executing SQL query");
+      return;
+    }
+    results = results[0].frq;
+    res.json(results);
+    // console.log("Last coolState:", results);
+  });
+});
 // Serve index.html at the root URL
 app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "public", "index.html"));
@@ -140,6 +151,24 @@ app.post("/light_receiver", (req, res) => {
       return res.status(500).send("Database error: " + error.message);
     }
     res.status(200).send("Light state inserted successfully");
+  });
+});
+app.post("/frq_receiver", (req, res) => {
+  let frq = req.body.frq;
+
+  // Debugging: Log received data
+  console.log("Received frq:", frq);
+
+  if (!frq) {
+    return res.status(400).send("Invalid request");
+  }
+  const sql = "INSERT INTO freq (frq) VALUES (?)";
+  db.query(sql, [frq], (error, results) => {
+    if (error) {
+      console.error("Error executing SQL statement:", error);
+      return res.status(500).send("Database error: " + error.message);
+    }
+    res.status(200).send("Frq inserted successfully");
   });
 });
 
