@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Printer Animation</title>
+  <style>
+    #output {
+      font-family: monospace;
+      white-space: pre;
+      font-size: 1.5em;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+
+  <input id="input" type="text" placeholder="Type something and press Enter">
+  <div id="output"></div>
+
+  <script>
+    function sleep(ms) {
+      return new Promise(resolve => setTimeout(resolve, ms));
+    }
+
+    async function printer(input) {
+      const outputElement = document.getElementById("output");
+      let out = "";
+      let currentChar = 32;
+
+      for (let i = 0; i < input.length; i++) {
+        const getChar = input.charCodeAt(i);
+
+        while (currentChar < getChar) {
+          const currentOut = out + String.fromCharCode(currentChar);
+          outputElement.textContent = currentOut;
+          await sleep(10);
+          currentChar++;
+        }
+
+        out += String.fromCharCode(currentChar);
+        currentChar = 32;
+      }
+
+      outputElement.textContent = out;
+    }
+
+    document.getElementById("input").addEventListener("keydown", function(event) {
+      if (event.key === "Enter") {
+        const text = this.value;
+        printer(text);
+      }
+    });
+  </script>
+
+</body>
+</html>

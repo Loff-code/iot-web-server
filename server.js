@@ -96,6 +96,25 @@ app.delete("/data", (req, res) => {
   });
 });
 
+
+app.delete("/state", (req, res) => {
+  db.query("DELETE FROM sensor_data", (err, results) => {
+    if (err) {
+      console.error("Error executing SQL query:", err);
+      res.status(500).send("Error executing SQL query");
+      return;
+    }
+    res.send("All data deleted successfully");
+  });
+  db.query("ALTER TABLE sensor_data AUTO_INCREMENT = 1", (err, results) => {
+    if (err) {
+      console.error("Error executing SQL query:", err);
+      return;
+    }
+    console.log("Table auto-increment reset");
+  });
+});
+
 // Route to handle POST requests
 app.post("/data_receiver", (req, res) => {
   const sensorData = req.body.sensor_data;
