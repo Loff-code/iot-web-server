@@ -1,27 +1,24 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Loffy – Dashboard</title>
 
-  <!-- Vendor assets -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <link rel="icon" href="/images/Logo-modified.png" type="image/png" />
+
   <link rel="stylesheet" href="/Style/style.css" />
   <link rel="stylesheet" href="/Style/indexStyle.css" />
 
-
-  <!-- Header component loader -->
   <script type="module" src="/components/header.js"></script>
-  <!-- <link rel="stylesheet" href="/Style/header.css"> -->
   <link rel="prefetch" href="/partials/header.html" as="document">
 </head>
+
 <body>
-  <!-- Shared header (logo + nav + login UI) -->
   <header-component></header-component>
 
-  <!-- ------------- main content ------------------------------------------------- -->
   <table id="dataTable" border="1"></table>
 
   <div class="button-container">
@@ -34,9 +31,12 @@
 
   <h3>Control Lights</h3>
   <form id="lightForm" style="display:flex;flex-direction:row">
-    <div class="checkbox-container"><input onclick="sendRequest()" type="checkbox" id="red"    name="red"    value="1" data-label="Red"></div>
-    <div class="checkbox-container"><input onclick="sendRequest()" type="checkbox" id="yellow" name="yellow" value="1" data-label="Yellow"></div>
-    <div class="checkbox-container"><input onclick="sendRequest()" type="checkbox" id="green"  name="green"  value="1" data-label="Green"></div>
+    <div class="checkbox-container"><input onclick="sendRequest()" type="checkbox" id="red" name="red" value="1"
+        data-label="Red"></div>
+    <div class="checkbox-container"><input onclick="sendRequest()" type="checkbox" id="yellow" name="yellow" value="1"
+        data-label="Yellow"></div>
+    <div class="checkbox-container"><input onclick="sendRequest()" type="checkbox" id="green" name="green" value="1"
+        data-label="Green"></div>
   </form>
 
   <form id="frqForm" style="margin-top:1rem">
@@ -44,59 +44,12 @@
     <input type="number" id="frq" name="frq" required>
     <button type="submit">Set Frequency</button>
   </form>
- <script>
-    const host="";           // e.g. "//192.168.68.110" if needed
 
-    function sendFrequency(e){
-      e.preventDefault();
-      const formData=new FormData(document.getElementById('frqForm'));
-      fetch(host+'/frq_receiver',{method:'POST',body:new URLSearchParams(formData)})
-        .then(r=>r.text()).then(console.log).catch(console.error);
-    }
-    document.getElementById('frqForm').addEventListener('submit',sendFrequency);
+  <button onclick="createSine()">Add sine data</button>
 
-    function sendRequest(){
-      const formData=new FormData(document.getElementById('lightForm'));
-      if(!formData.has('red'))   formData.append('red','0');
-      if(!formData.has('yellow'))formData.append('yellow','0');
-      if(!formData.has('green')) formData.append('green','0');
-      fetch(host+'/light_receiver',{method:'POST',body:new URLSearchParams(formData)})
-        .then(r=>r.text()).then(console.log).catch(console.error);
-    }
-
-    function deleteData(){ fetch('/data',{method:'DELETE'}).then(slcDataToTable); }
-
-    function addHeader(tableId,dataNames){
-      const table=document.getElementById(tableId);
-      const header=table.createTHead();
-      const row=header.insertRow(0);
-      dataNames.forEach(txt=>{const th=document.createElement('th');th.innerText=txt;row.appendChild(th);});
-    }
-    function addRow(tableId,data,rowIndex){
-      const table=document.getElementById(tableId);
-      const row=table.insertRow(-1);
-      data.forEach((arr,i)=>{const cell=row.insertCell(i);cell.innerText=arr[arr.length-rowIndex];});
-    }
-    function slcDataToTable(){
-      fetch('/data').then(r=>r.json()).then(data=>{
-        const table=document.getElementById('dataTable');
-        table.innerHTML='';
-        const ids=data.map(r=>r.id);
-        const sensor=data.map(r=>r.sensor_value);
-        const time=data.map(r=>r.time_stamp);
-        const state=data.map(r=>r.coolState);
-        const date=data.map(r=>r.date_stamp);
-        const rowData=[ids,sensor,time,state,date];
-        const headers=['ID','Sensor Value','Time Stamp','Cool State','Date'];
-        addHeader('dataTable',headers);
-        for(let i=1;i<=3;i++) addRow('dataTable',rowData,i);
-      });
-    }
-    slcDataToTable();
-    setInterval(slcDataToTable,1000);
-  </script>
-
-  <!-- your external scripts -->
+  <script src="/Script/database.js"></script>
+  <script src="/Script/index.js"></script>
   <script src="/Script/graph.js"></script>
 </body>
+
 </html>

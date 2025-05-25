@@ -1,4 +1,4 @@
-/* Header Web Component */
+// Header Web Component – full version with Register support
 
 const FRAGMENT = '/partials/header.html';
 const STYLE_URL = '/Style/header.css';
@@ -10,28 +10,29 @@ class HeaderComponent extends HTMLElement {
   }
 
   async connectedCallback() {
-    /* fetch and cache the fragment */
-    if (!HeaderComponent.tpl) {
-      const res = await fetch(FRAGMENT, { credentials: 'same-origin' });
-      if (!res.ok) throw new Error(`Header fetch failed ${res.status}`);
-      HeaderComponent.tpl = document.createElement('template');
-      HeaderComponent.tpl.innerHTML = await res.text();
-    }
-    this.root.appendChild(HeaderComponent.tpl.content.cloneNode(true));
+    try {
+      /* fetch and cache the fragment */
+      if (!HeaderComponent.tpl) {
+        const res = await fetch(FRAGMENT, { credentials: 'same-origin' });
+        if (!res.ok) throw new Error(`Header fetch failed ${res.status}`);
+        HeaderComponent.tpl = document.createElement('template');
+        HeaderComponent.tpl.innerHTML = await res.text();
+      }
+      this.root.appendChild(HeaderComponent.tpl.content.cloneNode(true));
 
-    /* bring in the shared CSS once */
-    if (!HeaderComponent.cssLinkAdded) {
-      const link = document.createElement('link');
-      link.rel = 'stylesheet';
-      link.href = STYLE_URL;
-      this.root.prepend(link);
-      HeaderComponent.cssLinkAdded = true;
-    }
+      /* bring in shared stylesheet once */
+      if (!HeaderComponent.cssLinkAdded) {
+        const link = document.createElement('link');
+        link.rel = 'stylesheet';
+        link.href = STYLE_URL;
+        this.root.prepend(link);
+        HeaderComponent.cssLinkAdded = true;
+      }
 
-    /* modal-only styles */
-    if (!HeaderComponent.modalStyleAdded) {
-      const style = document.createElement('style');
-      style.textContent = `
+      /* inject modal style once */
+      if (!HeaderComponent.modalStyleAdded) {
+        const style = document.createElement('style');
+        style.textContent = `
 .modal{display:none;position:fixed;inset:0;justify-content:center;align-items:center;background:rgba(0,0,0,.5);backdrop-filter:blur(3px);z-index:1000}
 .modal.show{display:flex}
 .modal .box{background:#0f4a61;padding:2rem;min-width:260px;border-radius:8px;box-shadow:0 8px 32px rgba(0,0,0,.25);position:relative}
@@ -41,64 +42,113 @@ class HeaderComponent extends HTMLElement {
 .modal button:hover{background:#2980b9}
 .error{color:#ff7070;font-size:.85rem;margin-top:.5rem}
 `;
-      this.root.prepend(style);
-      HeaderComponent.modalStyleAdded = true;
-    }
+        this.root.prepend(style);
+        HeaderComponent.modalStyleAdded = true;
+      }
 
-    /* grab nodes */
-    const who       = this.root.getElementById('who');
-    const loginBtn  = this.root.getElementById('loginBtn');
-    const logoutBtn = this.root.getElementById('logoutBtn');
-    const modal     = this.root.getElementById('loginModal');
-    const closeX    = modal.querySelector('.close');
-    const loginForm = this.root.getElementById('loginForm');
+      /* node references */
+      const who = this.root.getElementById('who');
+      const loginBtn = this.root.getElementById('loginBtn');
+      const registerBtn = this.root.getElementById('registerBtn');
+      const logoutBtn = this.root.getElementById('logoutBtn');
 
-    /* helpers */
-    const openModal  = () => { modal.classList.add('show'); modal.setAttribute('aria-hidden','false'); };
-    const closeModal = () => { modal.classList.remove('show'); modal.setAttribute('aria-hidden','true'); this.root.getElementById('loginErr').textContent=''; };
+      const loginModal = this.root.getElementById('loginModal');
+      const loginClose = loginModal.querySelector('.close');
+      const loginForm = this.root.getElementById('loginForm');
 
-    /* session state */
-    async function refreshSession() {
-      try {
-        const res = await fetch('/me', { credentials: 'same-origin' });
-        if (!res.ok) throw new Error(res.status);
-        const { user } = await res.json();
-        if (user) {
-          who.textContent = `Welcome, ${user.name}!`;
-          logoutBtn.style.display = 'inline';
-          loginBtn.style.display  = 'none';
-        } else {
-          who.textContent = '';
-          logoutBtn.style.display = 'none';
-          loginBtn.style.display  = 'inline';
-        }
-      } catch (err) { console.error(err); }
-    }
-    refreshSession();
+      const regModal = this.root.getElementById('registerModal');
+      const regClose = regModal.querySelector('.close');
+      const regForm = this.root.getElementById('registerForm');
 
-    /* events */
-    loginBtn .addEventListener('click', openModal);
-    closeX   .addEventListener('click', closeModal);
-    modal    .addEventListener('click', e => { if (e.target === e.currentTarget) closeModal(); });
-    this.root.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+      /* helpers to show / hide modals */
+      const openLogin = () => { loginModal.classList.add('show'); loginModal.setAttribute('aria-hidden', 'false'); };
+      const closeLogin = () => { loginModal.classList.remove('show'); loginModal.setAttribute('aria-hidden', 'true'); this.root.getElementById('loginErr').textContent = ''; };
 
-    loginForm.addEventListener('submit', async e => {
-      e.preventDefault();
-      const data = Object.fromEntries(new FormData(e.target).entries());
-      const res  = await fetch('/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(data),
-        credentials: 'same-origin'
+      const openReg = () => { regModal.classList.add('show'); regModal.setAttribute('aria-hidden', 'false'); };
+      const closeReg = () => { regModal.classList.remove('show'); regModal.setAttribute('aria-hidden', 'true'); this.root.getElementById('regErr').textContent = ''; };
+
+      /* fetch session state */
+      async function refreshSession() {
+        try {
+          const res = await fetch('/me', { credentials: 'same-origin' });
+          if (!res.ok) throw new Error(res.status);
+          const { user } = await res.json();
+          if (user) {
+            who.textContent = `Welcome, ${user.name}!`;
+            logoutBtn.style.display = 'inline';
+            loginBtn.style.display = 'none';
+            registerBtn.style.display = 'none';
+          } else {
+            who.textContent = '';
+            logoutBtn.style.display = 'none';
+            loginBtn.style.display = 'inline';
+            registerBtn.style.display = 'inline';
+          }
+        } catch (err) { console.error(err); }
+      }
+      await refreshSession();
+
+      /* event bindings */
+      loginBtn.addEventListener('click', openLogin);
+      loginClose.addEventListener('click', closeLogin);
+      loginModal.addEventListener('click', e => { if (e.target === e.currentTarget) closeLogin(); });
+
+      registerBtn.addEventListener('click', openReg);
+      regClose.addEventListener('click', closeReg);
+      regModal.addEventListener('click', e => { if (e.target === e.currentTarget) closeReg(); });
+
+      this.root.addEventListener('keydown', e => {
+        if (e.key === 'Escape') { closeLogin(); closeReg(); }
       });
-      if (res.ok) { closeModal(); refreshSession(); }
-      else this.root.getElementById('loginErr').textContent = await res.text();
-    });
 
-    logoutBtn.addEventListener('click', async () => {
-      await fetch('/logout', { method: 'POST', credentials: 'same-origin' });
-      refreshSession();
-    });
+      /* login form submit */
+      loginForm.addEventListener('submit', async e => {
+        e.preventDefault();
+        const data = Object.fromEntries(new FormData(e.target).entries());
+        const res = await fetch('/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(data),
+          credentials: 'same-origin'
+        });
+        if (res.ok) { closeLogin(); refreshSession(); }
+        else this.root.getElementById('loginErr').textContent = await res.text();
+      });
+
+      /* register form submit */
+      regForm.addEventListener('submit', async e => {
+        e.preventDefault();
+        const data = Object.fromEntries(new FormData(e.target).entries());
+        const res = await fetch('/register', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(data),
+          credentials: 'same-origin'
+        });
+        if (res.ok) {
+          /* optional auto‑login */
+          await fetch('/login', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email: data.email, password: data.password }),
+            credentials: 'same-origin'
+          });
+          closeReg();
+          refreshSession();
+        } else {
+          this.root.getElementById('regErr').textContent = await res.text();
+        }
+      });
+
+      /* logout */
+      logoutBtn.addEventListener('click', async () => {
+        await fetch('/logout', { method: 'POST', credentials: 'same-origin' });
+        refreshSession();
+      });
+
+    } catch (err) {
+      console.error(err);
+    }
   }
 }
 

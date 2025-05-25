@@ -1,10 +1,10 @@
-require('dotenv').config();        
+require('dotenv').config();
 
 const express = require("express");
-const mysql   = require("mysql2");
-const path    = require("path");
-const session = require("express-session");   
-const bcrypt  = require("bcrypt"); 
+const mysql = require("mysql2");
+const path = require("path");
+const session = require("express-session");
+const bcrypt = require("bcrypt");
 const app = express();
 
 const port = 80;
@@ -31,16 +31,16 @@ app.use(session({
   resave: false,
   saveUninitialized: false,
   cookie: {
-    httpOnly : true,
-    sameSite : 'lax',
-    secure   : true          // stays HTTPS-only
+    httpOnly: true,
+    sameSite: 'lax',
+    secure: true          // stays HTTPS-only
   }
 }));
 
 
 // Use body-parser middleware to parse URL-encoded request bodies
 app.use(express.urlencoded({ extended: true }));
-app.use(express.json());                
+app.use(express.json());
 // Endpoint to get data from MySQL
 app.get("/data", (req, res) => {
   db.query("SELECT * FROM sensor_data", (err, results) => {
@@ -221,12 +221,12 @@ app.post("/login", (req, res) => {
   if (!email || !password) return res.status(400).send("Missing creds");
 
   db.query("SELECT * FROM users WHERE email = ?", [email], async (err, rows) => {
-    if (err)  return res.status(500).send("DB error");
+    if (err) return res.status(500).send("DB error");
     const user = rows[0];
     if (!user) return res.status(400).send("Bad email or password");
 
     const ok = await bcrypt.compare(password, user.pw_hash);
-    if (!ok)  return res.status(400).send("Bad email or password");
+    if (!ok) return res.status(400).send("Bad email or password");
 
     req.session.user = { id: user.id, name: user.displayName };
     res.sendStatus(204);             // success, no body needed
@@ -242,6 +242,40 @@ app.post("/logout", (req, res) => {
 app.get("/me", (req, res) => {
   res.json({ user: req.session.user || null });
 });
+
+
+
+
+
+app.post('/register', async (req, res) => {
+  try {
+    const email = req.body.email;
+    const name = req.body.name;
+    const password = req.body.password;
+
+    // Hash the password properly
+    const hash = await bcrypt.hash(password, 12);
+
+    const sql =
+      "INSERT INTO users (email, displayName, pw_hash) VALUES (?, ?, ?) ON DUPLICATE KEY UPDATE pw_hash = pw_hash";
+
+    db.query(sql, [email, name, hash], (error, results) => {
+      if (error) {
+        console.error("Error executing SQL statement:", error);
+        return res.status(500).send("Database error: " + error.message);
+      }
+
+      res.status(200).send("User registered successfully");
+    });
+
+  } catch (err) {
+    console.error("Error hashing password:", err);
+    res.status(500).send("Server error during registration");
+  }
+});
+
+
+
 
 // Start server
 app.listen(port, () => {
