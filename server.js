@@ -1,18 +1,13 @@
-const express = require("express");
-const mysql = require("mysql2");
-const path = require("path");
-const bodyParser = require("body-parser");
+require('dotenv').config();          // ❶ always first
 
+const express = require("express");
+const mysql   = require("mysql2");
+const path    = require("path");
+const session = require("express-session");   // (login later)
 const app = express();
 const port = 80;
 
-// MySQL database connection
-const db = mysql.createConnection({
-  host: "localhost",
-  user: "example_user",
-  password: "9Lesbians!",
-  database: "mydatabase",
-});
+const db = mysql.createConnection(process.env.DATABASE_URL);
 
 // Connect to MySQL
 db.connect((err) => {
@@ -26,9 +21,17 @@ db.connect((err) => {
 // Serve static files
 app.use(express.static(path.join(__dirname, "public")));
 
-// Use body-parser middleware to parse URL-encoded request bodies
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(session({
+  name: 'sid',
+  secret: process.env.SESSION_SECRET,
+  resave: false,
+  saveUninitialized: false,
+  cookie: { httpOnly: true, sameSite: 'lax', secure: true }
+}));
 
+// Use body-parser middleware to parse URL-encoded request bodies
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());                
 // Endpoint to get data from MySQL
 app.get("/data", (req, res) => {
   db.query("SELECT * FROM sensor_data", (err, results) => {
