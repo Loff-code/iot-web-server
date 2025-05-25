@@ -21,7 +21,11 @@ function buy() {
     cans -= 1;
     sumDsp.value = sum.toString();
   } else {
-    textDisplay.innerText = "Low on cash";
+    if (sum < price) {
+      textDisplay.innerText = "Low on cash";
+    } else if (cans <= 0) {
+      textDisplay.innerText = "Low on cans";
+    }
     fails += 1;
   }
   canCount.textContent = cans.toString();
