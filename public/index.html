@@ -3,68 +3,23 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Loffy – Dashboard</title>
+  <title>Loffy – Dashboard</title>
 
   <!-- Vendor assets -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <link rel="icon" href="/images/Logo-modified.png" type="image/png" />
   <link rel="stylesheet" href="/Style/style.css" />
+  <link rel="stylesheet" href="/Style/indexStyle.css" />
 
-  <!-- Page‑specific styles (checkboxes + modal) -->
-  <style>
-    /* ---------- checkbox buttons ------------------------------------------------ */
-    .checkbox-container{display:flex;align-items:center;margin-right:10px}
-    .checkbox-container input[type="checkbox"]{
-      width:60px;height:30px;appearance:none;cursor:pointer;position:relative;
-      display:inline-block;padding:10px 20px;margin:10px 0;border-radius:20px;
-      background:#3498db;color:#fff;background-position:8px center;
-      background-repeat:no-repeat;padding-left:32px;background-size:16px 16px;
-      transition:background-color .3s ease;
-    }
-    .checkbox-container input[type="checkbox"]::after{
-      content:attr(data-label);color:#fff;position:absolute;top:50%;left:50%;
-      transform:translate(-50%,-50%);font-size:12px;pointer-events:none;
-    }
-    .checkbox-container input[type="checkbox"]:checked#red    {background:red}
-    .checkbox-container input[type="checkbox"]:checked#yellow {background:yellow;color:#000}
-    .checkbox-container input[type="checkbox"]:checked#green  {background:green}
 
-    /* ---------- login modal ---------------------------------------------------- */
-    .modal{display:none;position:fixed;inset:0;justify-content:center;align-items:center;
-           background:rgba(0,0,0,.5);backdrop-filter:blur(3px);z-index:1000;}
-    .modal.show{display:flex}
-
-    .modal .box{position:relative;background:#0f4a61;padding:2rem;min-width:260px;
-                border-radius:8px;box-shadow:0 8px 32px rgba(0,0,0,.25)}
-    .modal .close{position:absolute;top:.5rem;right:.75rem;border:0;background:none;
-                  font-size:1.5rem;cursor:pointer;line-height:1}
-    .error{color:#c00;font-size:.9rem;margin-top:.5rem}
-  </style>
+  <!-- Header component loader -->
+  <script type="module" src="/components/header.js"></script>
+  <!-- <link rel="stylesheet" href="/Style/header.css"> -->
+  <link rel="prefetch" href="/partials/header.html" as="document">
 </head>
 <body>
-  <!-- site header (uses your custom element) -->
+  <!-- Shared header (logo + nav + login UI) -->
   <header-component></header-component>
-
-  <!-- session UI -->
-  <div style="margin:1rem 0">
-    <span id="who"></span>
-    <button id="loginBtn"  style="display:none">Log&nbsp;in</button>
-    <button id="logoutBtn" style="display:none">Log&nbsp;out</button>
-  </div>
-
-  <!-- ------------- login modal -------------------------------------------------- -->
-  <div id="loginModal" class="modal" aria-hidden="true">
-    <div class="box" role="dialog" aria-modal="true" aria-labelledby="loginTitle">
-      <button class="close" aria-label="Close">&times;</button>
-      <h2 id="loginTitle" style="margin-top:0">Log in</h2>
-      <form id="loginForm">
-        <input name="email"    type="email"    placeholder="Email"    required autofocus>
-        <input name="password" type="password" placeholder="Password" required>
-        <button style="margin-top:1rem">Log in</button>
-        <p id="loginErr" class="error"></p>
-      </form>
-    </div>
-  </div>
 
   <!-- ------------- main content ------------------------------------------------- -->
   <table id="dataTable" border="1"></table>
@@ -89,63 +44,7 @@
     <input type="number" id="frq" name="frq" required>
     <button type="submit">Set Frequency</button>
   </form>
-
-  <!-- ------------- scripts ------------------------------------------------------ -->
-  <script>
-  /* helpers */
-  const $ = sel => document.querySelector(sel);
-
-  /* ---------- session check ---------- */
-  async function checkSession(){
-    try{
-      const {user} = await fetch('/me',{credentials:'same-origin'}).then(r=>r.json());
-      if (user){
-        $('#who').textContent = `Welcome, ${user.name}!`;
-        $('#logoutBtn').style.display = 'inline';
-        $('#loginBtn').style.display  = 'none';
-      }else{
-        $('#who').textContent = '';
-        $('#logoutBtn').style.display = 'none';
-        $('#loginBtn').style.display  = 'inline';
-      }
-    }catch(err){console.error(err)}
-  }
-  checkSession();
-
-  /* ---------- open / close modal ---------- */
-  function openModal(){ $('#loginModal').classList.add('show'); $('#loginModal').setAttribute('aria-hidden','false'); }
-  function closeModal(){ $('#loginModal').classList.remove('show'); $('#loginModal').setAttribute('aria-hidden','true'); $('#loginErr').textContent=''; }
-
-  $('#loginBtn').addEventListener('click', openModal);
-  $('#loginModal .close').addEventListener('click', closeModal);
-  $('#loginModal').addEventListener('click', e=>{ if (e.target === e.currentTarget) closeModal(); });
-  window.addEventListener('keydown', e=>{ if (e.key==='Escape') closeModal(); });
-
-  /* ---------- handle login ---------- */
-  $('#loginForm').addEventListener('submit', async e=>{
-    e.preventDefault();
-    const form = Object.fromEntries(new FormData(e.target).entries());
-    const res = await fetch('/login',{
-      method:'POST',headers:{'Content-Type':'application/json'},
-      body:JSON.stringify(form),credentials:'same-origin'
-    });
-    if (res.ok){
-      closeModal();
-      checkSession();
-    }else{
-      $('#loginErr').textContent = await res.text();
-    }
-  });
-
-  /* ---------- handle logout ---------- */
-  $('#logoutBtn').addEventListener('click', async ()=>{
-    await fetch('/logout',{method:'POST',credentials:'same-origin'});
-    checkSession();
-  });
-  </script>
-
-  <!-- original data/graph logic  ---------------------------------------------- -->
-  <script>
+ <script>
     const host="";           // e.g. "//192.168.68.110" if needed
 
     function sendFrequency(e){
@@ -199,6 +98,5 @@
 
   <!-- your external scripts -->
   <script src="/Script/graph.js"></script>
-  <script src="/Script/heading.js"></script>
 </body>
 </html>
