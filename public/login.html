@@ -1,0 +1,24 @@
+<!DOCTYPE html><meta charset="utf-8">
+<title>Log in</title>
+<form id="f" style="display:flex;flex-direction:column;max-width:240px">
+  <input name="email"    type="email"    placeholder="email"    required>
+  <input name="password" type="password" placeholder="password" required>
+  <button>Log in</button>
+</form>
+<script>
+document.getElementById('f').addEventListener('submit', async e => {
+  e.preventDefault();
+
+  // Turn the form into a plain object
+  const data = Object.fromEntries(new FormData(e.target).entries());
+
+  const res = await fetch('/login', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },   // or application/x-www-form-urlencoded
+    body: JSON.stringify(data)                         // or new URLSearchParams(data)
+  });
+
+  if (res.ok) location.href = '/';
+  else        alert(await res.text());
+});
+</script>

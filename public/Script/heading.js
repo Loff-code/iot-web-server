@@ -15,6 +15,7 @@ headerTemplate.innerHTML = `
       <div class="dropdown-content">
         <a class="download" href="/Pages/Downloads.htm  Scrapers ScrapersScrapersl">æææ</a>
         </div>
+
     </div>
       <div class="dropdown">
         <button class="dropbtn"></button>

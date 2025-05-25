@@ -1,10 +1,12 @@
-require('dotenv').config();          // ❶ always first
+require('dotenv').config();        
 
 const express = require("express");
 const mysql   = require("mysql2");
 const path    = require("path");
-const session = require("express-session");   // (login later)
+const session = require("express-session");   
+const bcrypt  = require("bcrypt"); 
 const app = express();
+
 const port = 80;
 
 const db = mysql.createConnection(process.env.DATABASE_URL);
@@ -20,14 +22,21 @@ db.connect((err) => {
 
 // Serve static files
 app.use(express.static(path.join(__dirname, "public")));
+// Trust the first proxy (Cloudflare) so req.secure becomes true
+app.set('trust proxy', 1);
 
 app.use(session({
   name: 'sid',
   secret: process.env.SESSION_SECRET,
   resave: false,
   saveUninitialized: false,
-  cookie: { httpOnly: true, sameSite: 'lax', secure: true }
+  cookie: {
+    httpOnly : true,
+    sameSite : 'lax',
+    secure   : true          // stays HTTPS-only
+  }
 }));
+
 
 // Use body-parser middleware to parse URL-encoded request bodies
 app.use(express.urlencoded({ extended: true }));
@@ -194,9 +203,50 @@ app.post("/frq_receiver", (req, res) => {
   });
 });
 
+
+function requireAuth(req, res, next) {
+  if (!req.session.user) return res.status(401).send("Login required");
+  next();
+}
+
+/* Put the current user in every template/JSON if you ever render views */
+app.use((req, res, next) => {
+  res.locals.currentUser = req.session.user || null;
+  next();
+});
+
+
+app.post("/login", (req, res) => {
+  const { email, password } = req.body;
+  if (!email || !password) return res.status(400).send("Missing creds");
+
+  db.query("SELECT * FROM users WHERE email = ?", [email], async (err, rows) => {
+    if (err)  return res.status(500).send("DB error");
+    const user = rows[0];
+    if (!user) return res.status(400).send("Bad email or password");
+
+    const ok = await bcrypt.compare(password, user.pw_hash);
+    if (!ok)  return res.status(400).send("Bad email or password");
+
+    req.session.user = { id: user.id, name: user.displayName };
+    res.sendStatus(204);             // success, no body needed
+  });
+});
+
+// POST /logout
+app.post("/logout", (req, res) => {
+  req.session.destroy(() => res.sendStatus(204));
+});
+
+// GET /me  handy for the front end
+app.get("/me", (req, res) => {
+  res.json({ user: req.session.user || null });
+});
+
 // Start server
 app.listen(port, () => {
   console.log(
     `Server listening at http://192.168.1.240:${port} or http://localhost:${port}`
   );
 });
+
