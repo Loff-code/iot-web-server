@@ -1,15 +1,17 @@
+/* ─────────────  GLOBAL HEADER  ───────────── */
 
 .blog-header {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-start;   /* lay items out in source order */
   background-color: #212e36;
-  padding: 0px 10px;
-  text-align: center;
-  color: #fff;
-  height: 50px;
+  padding: 0 10px;
   min-height: 50px;
+  color: #fff;
+  text-align: center;
 }
+
+/* ─────────────  LOGO  ───────────── */
 
 .blog-header a.logo-link {
   display: flex;
@@ -17,7 +19,7 @@
   background: none;
   border: none;
   margin-right: 10px;
-  padding: 0%;
+  padding: 0;
   text-decoration: none;
 }
 
@@ -28,52 +30,52 @@
   margin-right: 10px;
 }
 
-.blog-header a.logo-link:hover {
-  background: none;
-}
+.blog-header a.logo-link:hover { background: none; }
+
+/* ─────────────  DROPDOWN MENU  ───────────── */
 
 .dropdown {
+  order: 3;                     /* renders after .auth despite DOM order */
+  position: relative;           /* keeps dropdown-content positioned */
+  margin-left: .75rem;          /* small gap from auth buttons */
   display: inline-block;
-  position: relative;
 }
 
 .dropbtn {
   display: inline-block;
   padding: 20px 20px;
-  text-decoration: none;
-  color: #fff;
-  background-color: transparent;
-  border-radius: 18px;
+  background: transparent url('/Icons/Menu.png') center / 25px 25px no-repeat;
   border: none;
-  transition: background-color 0.3s ease;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: 25px 25px;
-  background-image: url("/Icons/Menu.png");
+  border-radius: 18px;
+  color: #fff;
   cursor: pointer;
+  transition: background-color 0.3s ease;
 }
 
 .dropbtn:hover {
-  background: #2980b9;
+  background-color: #2980b9;
+  background-image: url('/Icons/Menu.png');
   background-position: center;
   background-repeat: no-repeat;
   background-size: 25px 25px;
-  background-image: url("/Icons/Menu.png");
 }
 
 .dropdown-content {
   display: none;
   position: absolute;
-  background-color: rgba(0, 0, 0, 0.9);
+  /*   R   G   B   A   */
+  background-color: rgba(41, 128, 185, 0.40);  /* #2980b9 at 85 % opacity */
   min-width: 160px;
   right: 4px;
   z-index: 10;
+   border-radius: 32px;
 }
 
+
 .dropdown-content a {
-  color: #fff;
-  padding: 12px 26px;
   display: block;
+  padding: 12px 26px;
+  color: #fff;
   text-decoration: none;
 }
 
@@ -82,45 +84,35 @@
   color: #000;
 }
 
-.dropdown:hover .dropdown-content {
-  display: block;
-}
+.dropdown:hover .dropdown-content { display: block; }
+
+/* ─────────────  GENERAL LINKS WITH ICONS  ───────────── */
 
 a {
   display: inline-block;
+  padding-left: 36px;
+  background-position: 5px center;
+  background-repeat: no-repeat;
+  background-size: 16px 16px;
   text-decoration: none;
   color: #fff;
   border-radius: 50px;
   transition: background-color 0.3s ease;
-  background-position: 5px center;
-  background-repeat: no-repeat;
-  padding-left: 36px;
-  background-size: 16px 16px;
 }
 
-a.download {
-  background-image: url("/Icons/downloads.png");
-}
+a.download  { background-image: url('/Icons/downloads.png'); }
+a.converter { background-image: url('/Icons/Converter.png'); }
+a.next      { background-image: url('/Icons/Next.png'); }
+a.email     { background-image: url('/Icons/Email.png'); background-size: 20px 16px; }
 
-a.converter {
-  background-image: url("/Icons/Converter.png");
-}
-
-a.next {
-  background-image: url("/Icons/Next.png");
-}
-
-a.email {
-  background-image: url("/Icons/Email.png");
-  background-size: 20px 16px;
-}
+/* ─────────────  AUTH BLOCK  ───────────── */
 
 .auth {
+  order: 2;          /* appears before the dropdown (order:3) */
   display: flex;
   align-items: center;
   gap: .75rem;
-  padding-right: .75rem;
-  font-family: inherit;
+  margin-left: auto; /* pushes auth + dropdown to the far right */
   font-size: .9rem;
 }
 
@@ -132,16 +124,19 @@ a.email {
   background: #3498db;
   color: #fff;
   cursor: pointer;
+  transition: background-color 0.3s ease;
 }
 
-.auth button:hover {
-  background: #2980b9;
-}
+.auth button:hover { background: #2980b9; }
+
+/* ─────────────  CUSTOM ELEMENT WRAPPER  ───────────── */
 
 header-component {
   display: block;
   margin-bottom: 20px;
 }
+
+/* ─────────────  DATA TABLE (UNRELATED)  ───────────── */
 
 #dataTable {
   width: 90%;

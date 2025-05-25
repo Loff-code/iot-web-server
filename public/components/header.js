@@ -1,4 +1,4 @@
-// Header Web Component – full version with Register support
+// Header Web Component – full version with Register support + animated welcome
 
 const FRAGMENT = '/partials/header.html';
 const STYLE_URL = '/Style/header.css';
@@ -7,6 +7,32 @@ class HeaderComponent extends HTMLElement {
   constructor() {
     super();
     this.root = this.attachShadow({ mode: 'open' });
+  }
+
+  static getCorrect(input) {
+    if (input <= 64) {
+      return 32;
+
+    } else {
+      return input - 5;
+    }
+  }
+  /* helper for the animated type‑printer effect */
+  static sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
+  static async printer(el, input) {
+    let out = '';
+    let currentChar = this.getCorrect(input.charCodeAt(0)); // space
+    for (let i = 0; i < input.length; i++) {
+      const target = input.charCodeAt(i);
+      while (currentChar < target) {
+        el.textContent = out + String.fromCharCode(currentChar);
+        await HeaderComponent.sleep(50);
+        currentChar++;
+      }
+      out += String.fromCharCode(currentChar);
+      currentChar = this.getCorrect(input.charCodeAt(i + 1));
+    }
+    el.textContent = out;
   }
 
   async connectedCallback() {
@@ -68,16 +94,18 @@ class HeaderComponent extends HTMLElement {
       const closeReg = () => { regModal.classList.remove('show'); regModal.setAttribute('aria-hidden', 'true'); this.root.getElementById('regErr').textContent = ''; };
 
       /* fetch session state */
-      async function refreshSession() {
+      const refreshSession = async () => {
         try {
           const res = await fetch('/me', { credentials: 'same-origin' });
           if (!res.ok) throw new Error(res.status);
           const { user } = await res.json();
           if (user) {
-            who.textContent = `Welcome, ${user.name}!`;
+            // animate welcome using printer
+
             logoutBtn.style.display = 'inline';
             loginBtn.style.display = 'none';
             registerBtn.style.display = 'none';
+            await HeaderComponent.printer(who, `Welcome, ${user.name}!`);
           } else {
             who.textContent = '';
             logoutBtn.style.display = 'none';
@@ -85,7 +113,7 @@ class HeaderComponent extends HTMLElement {
             registerBtn.style.display = 'inline';
           }
         } catch (err) { console.error(err); }
-      }
+      };
       await refreshSession();
 
       /* event bindings */
@@ -126,7 +154,7 @@ class HeaderComponent extends HTMLElement {
           credentials: 'same-origin'
         });
         if (res.ok) {
-          /* optional auto‑login */
+          // optional auto‑login
           await fetch('/login', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },

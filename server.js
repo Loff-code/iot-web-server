@@ -11,7 +11,6 @@ const port = 80;
 
 const db = mysql.createConnection(process.env.DATABASE_URL);
 
-// Connect to MySQL
 db.connect((err) => {
   if (err) {
     console.error("Database connection failed: " + err.stack);
@@ -20,9 +19,7 @@ db.connect((err) => {
   console.log("Connected to database");
 });
 
-// Serve static files
 app.use(express.static(path.join(__dirname, "public")));
-// Trust the first proxy (Cloudflare) so req.secure becomes true
 app.set('trust proxy', 1);
 
 app.use(session({
@@ -33,15 +30,15 @@ app.use(session({
   cookie: {
     httpOnly: true,
     sameSite: 'lax',
-    secure: true          // stays HTTPS-only
+    secure: true
   }
 }));
 
 
-// Use body-parser middleware to parse URL-encoded request bodies
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-// Endpoint to get data from MySQL
+
+
 app.get("/data", (req, res) => {
   db.query("SELECT * FROM sensor_data", (err, results) => {
     if (err) {
@@ -50,7 +47,6 @@ app.get("/data", (req, res) => {
       return;
     }
     res.json(results);
-    // console.log("All data:", results);
   });
 });
 
@@ -68,7 +64,6 @@ app.get("/state", (req, res) => {
         String(results[0].yellow) +
         String(results[0].green);
       res.json(results);
-      // console.log("Last coolState:", results);
     }
   );
 });
@@ -81,15 +76,13 @@ app.get("/frq", (req, res) => {
     }
     results = results[0].frq;
     res.json(results);
-    // console.log("Last coolState:", results);
   });
 });
-// Serve index.html at the root URL
+
 app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "public", "index.html"));
 });
 
-// Route to delete all data
 app.delete("/data", (req, res) => {
   db.query("DELETE FROM sensor_data", (err, results) => {
     if (err) {
@@ -134,18 +127,15 @@ app.post("/data_receiver", (req, res) => {
   let time_stamp = req.body.time_stamp;
   let date_stamp = req.body.date_stamp;
 
-  // Debugging: Log received data
   console.log("Received sensor_data:", sensorData);
   console.log("Received coolState:", coolState);
   console.log("Received time_stamp:", time_stamp);
   console.log("Received date_stamp:", date_stamp);
+
   if (!sensorData || coolState === undefined) {
     return res.status(400).send("Invalid request");
   }
-
-  // Convert coolState to an integer (1 or 0)
   coolState = coolState === "true";
-
   const sql =
     "INSERT INTO sensor_data (sensor_value, coolState, time_stamp, date_stamp) VALUES (?, ?, ?, ?)";
 
@@ -162,12 +152,12 @@ app.post("/data_receiver", (req, res) => {
     }
   );
 });
+
 app.post("/light_receiver", (req, res) => {
   let red = req.body.red;
   let yellow = req.body.yellow;
   let green = req.body.green;
 
-  // Debugging: Log received data
   console.log("Received red:", red);
   console.log("Received yellow:", yellow);
   console.log("Received green:", green);
@@ -187,7 +177,6 @@ app.post("/light_receiver", (req, res) => {
 app.post("/frq_receiver", (req, res) => {
   let frq = req.body.frq;
 
-  // Debugging: Log received data
   console.log("Received frq:", frq);
 
   if (!frq) {
@@ -209,7 +198,7 @@ function requireAuth(req, res, next) {
   next();
 }
 
-/* Put the current user in every template/JSON if you ever render views */
+
 app.use((req, res, next) => {
   res.locals.currentUser = req.session.user || null;
   next();
@@ -229,21 +218,19 @@ app.post("/login", (req, res) => {
     if (!ok) return res.status(400).send("Bad email or password");
 
     req.session.user = { id: user.id, name: user.displayName };
-    res.sendStatus(204);             // success, no body needed
+    res.sendStatus(204);
   });
 });
 
-// POST /logout
+
 app.post("/logout", (req, res) => {
   req.session.destroy(() => res.sendStatus(204));
 });
 
-// GET /me  handy for the front end
+
 app.get("/me", (req, res) => {
   res.json({ user: req.session.user || null });
 });
-
-
 
 
 
@@ -252,13 +239,9 @@ app.post('/register', async (req, res) => {
     const email = req.body.email;
     const name = req.body.name;
     const password = req.body.password;
-
-    // Hash the password properly
     const hash = await bcrypt.hash(password, 12);
-
     const sql =
       "INSERT INTO users (email, displayName, pw_hash) VALUES (?, ?, ?) ON DUPLICATE KEY UPDATE pw_hash = pw_hash";
-
     db.query(sql, [email, name, hash], (error, results) => {
       if (error) {
         console.error("Error executing SQL statement:", error);
