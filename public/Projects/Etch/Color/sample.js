@@ -3,7 +3,7 @@
 const inputField = document.createElement("div");
 const input = document.createElement("input");
 input.type = "number";
-input.placeholder = "Enter text";
+input.placeholder = "Enter number";
 document.body.appendChild(inputField);
 inputField.appendChild(input);
 inputField.style.display = "flex";
@@ -19,7 +19,6 @@ function start() {
   const inputValue = input.value;
   console.log(inputValue);
   board(inputValue > 100 ? 100 : inputValue);
-  // Use the inputValue variable for further processing
 }
 
 const button = document.createElement("button");

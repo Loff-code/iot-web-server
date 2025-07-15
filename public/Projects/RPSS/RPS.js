@@ -17,11 +17,11 @@ function playRound(playerSelection, computerSelection, choices) {
 
   const output = String(
     "Player choice: " +
-      player +
-      "\nComputer choice: " +
-      pc +
-      "\nWinner: " +
-      winner
+    player +
+    "\nComputer choice: " +
+    pc +
+    "\nWinner: " +
+    winner
   );
   return output;
 }
@@ -32,13 +32,7 @@ function getComputerChoice() {
 
 console.log(playRound(playerSelection, computerSelection, choices));
 function play(playerSelection) {
-  const choices = ["Straight", "Gay", "Bi"];
-  // var userInput = prompt("Enter a number from 0 to 2:");
-  // const playerSelection = parseInt(
-  //   prompt(
-  //     "Straight beats Bi\nGay beats Straight\nBi beats Gay\n0. Straight | 1. Gay | 2. Bi \nEnter a number from 0 to 2:"
-  //   )
-  // );
+  const choices = ["Rock", "Paper", "Scissor"];
   const computerSelection = getComputerChoice();
   alert(playRound(playerSelection, computerSelection, choices));
 }

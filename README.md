@@ -22,7 +22,7 @@ A personal playground for databases, real-time IoT data ingestion, and browser-b
 * Frequency sender UI  
 * Mini-apps:  
   * Rock • Paper • Scissors  
-  * Binary vending-machine simulator  
+  * Binary vending-machine simulator  (Demo for FPGA-board project)
   * Etch-a-Sketch clone  
 * Animated “typewriter” greeting for the logged-in user
 
@@ -37,8 +37,10 @@ A personal playground for databases, real-time IoT data ingestion, and browser-b
 ## Quick Start
 
 ```bash
-git clone https://github.com/<you>/iot-web-server.git
+git clone https://github.com/Loff-code/iot-web-server.git
 cd iot-web-server
-cp .env.example .env      # fill in DATABASE_URL, SESSION_SECRET …
+cp .env.example .env    # Change .env to fit with your database
+mysql -u <user> -p < schema.sql   # Create the schema in your DB
 npm install
-npm start                 # runs on http://localhost:80
+npm start
+
