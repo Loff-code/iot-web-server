@@ -31,13 +31,15 @@ async function sendData(formData) {
 }
 
 async function createSine() {
+
   for (let i = 0; i < 100; i++) {
+    const date = new Date();
     const formData = new FormData();
     let value = (Math.cos(2 * Math.PI / 100 * i + Math.PI) + 1) * 2000;
     formData.append('sensor_data', value);
     formData.append('coolState', 'false');
-    formData.append('time_stamp', '19:19:19');
-    formData.append('date_stamp', '19/09/2021');
+    formData.append('time_stamp', date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds());
+    formData.append('date_stamp', date.getDate() + '/' + date.getMonth() + '/' + date.getFullYear());
     await sendData(formData);
   }
 }
