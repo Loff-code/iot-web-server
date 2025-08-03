@@ -39,12 +39,12 @@ function updChart() {
         index === 0
           ? "rgba(0, 0, 0, 1)"
           : index === sensorValues.length - 1
-          ? "rgba(0, 0, 0, 1)" // Set last point color to black
-          : value < 800
-          ? "rgba(255, 0, 0, 1)"
-          : value > 3200
-          ? "rgba(255, 255, 0, 1)"
-          : "rgba(0, 255, 0, 1)"
+            ? "rgba(0, 0, 0, 1)" // Set last point color to black
+            : value < 800
+              ? "rgba(255, 0, 0, 1)"
+              : value > 3200
+                ? "rgba(255, 255, 0, 1)"
+                : "rgba(0, 255, 0, 1)"
       );
       chart.data.datasets[0].borderColor = "rgba(0, 0, 255, 0.1)";
       chart.data.datasets[0].backgroundColor = pointColor;
@@ -96,36 +96,43 @@ function slcDataToTable() {
     });
 }
 
-function downloadData() {
-  fetch("/data")
-    .then((response) => response.json())
-    .then((data) => {
-      // Convert data to CSV format
-      // const csv = data.map((row) => Object.values(row).join(",")).join("\n");
-      const csv = data
-        .map((row) => {
-          let time_stamp = row.time_stamp.slice(0, 19).replace("T", " ");
-          const values = Object.values(row);
-          values[2] = time_stamp;
-          return values.join(",");
-        })
-        .join("\n");
-      // Create a temporary anchor element
-      const link = document.createElement("a");
-      link.href = "data:text/csv;charset=utf-8," + encodeURIComponent(csv);
-      link.download = "data.csv";
 
-      // Trigger the download
-      link.click();
+
+// https://stackoverflow.com/questions/75251617/convert-json-to-csv-and-download-file
+function downloadJSONAsCSV(endpoint) {
+  // Fetch JSON data from the endpoint
+  fetch(endpoint)
+    .then(response => response.json())
+    .then(jsonData => {
+      // Convert JSON data to CSV
+      let csvData = jsonToCsv(jsonData);
+
+      // Create a CSV file and allow the user to download it
+      let blob = new Blob([csvData], { type: 'text/csv' });
+      let url = window.URL.createObjectURL(blob);
+      let a = document.createElement('a');
+      a.href = url;
+      a.download = 'data.csv';
+      document.body.appendChild(a);
+      a.click();
     })
-    .catch((error) => console.error("Error fetching data:", error));
+    .catch(error => console.error(error));
 }
 
-// const csv = data
-// .map((row) => {
-//   let time_stamp = row.time_stamp.slice(0, 19).replace("T", " ");
-//   const values = Object.values(row);
-//   values[3] = time_stamp;
-//   return values.join(",");
-// })
-// .join("\n");
+function jsonToCsv(jsonData) {
+  let csv = '';
+
+  // Get the headers
+  let headers = Object.keys(jsonData[0]);
+  csv += headers.join(',') + '\n';
+
+  // Add the data
+  jsonData.forEach(function (row) {
+    let data = headers.map(header => row[header]).join(',');
+    csv += data + '\n';
+  });
+
+  return csv;
+}
+
+
