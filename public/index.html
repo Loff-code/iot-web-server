@@ -23,13 +23,14 @@
 
   <div class="button-container">
     <button onclick="deleteData()">Delete Data</button>
-    <button onclick="downloadData()">Download the Data</button>
-    <a href="/data" class="button">Upload Data</a>
+    <button onclick="downloadJSONAsCSV('/data')">Download the Data</button>
+    <a href="/data" class="button">JSON Data</a>
+  </div>
+  <div style="width: 100vw; height: 40vh;">
+    <canvas id="myChart" style="width: 100%; height: 100%;"></canvas>
   </div>
 
-  <div style="position: absolute; top: 100px; right: 0; width: 50vw; height: 25vw; max-width: 100%;"></div>
-  <canvas id="myChart" style="width:100%;height:100%;"></canvas>
-  </div>
+
 
   <h3>Control Lights</h3>
   <form id="lightForm" style="display:flex;flex-direction:row">

@@ -9,19 +9,12 @@ class HeaderComponent extends HTMLElement {
     this.root = this.attachShadow({ mode: 'open' });
   }
 
-  static getCorrect(input) {
-    if (input <= 64) {
-      return 32;
 
-    } else {
-      return input - 5;
-    }
-  }
   /* helper for the animated type‑printer effect */
   static sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
   static async printer(el, input) {
     let out = '';
-    let currentChar = this.getCorrect(input.charCodeAt(0)); // space
+    let currentChar = input.charCodeAt(0) - 5 >= 32 ? input.charCodeAt(0) - 5 : 32; // space
     for (let i = 0; i < input.length; i++) {
       const target = input.charCodeAt(i);
       while (currentChar < target) {
@@ -30,7 +23,7 @@ class HeaderComponent extends HTMLElement {
         currentChar++;
       }
       out += String.fromCharCode(currentChar);
-      currentChar = this.getCorrect(input.charCodeAt(i + 1));
+      currentChar = input.charCodeAt(i + 1) - 5 >= 32 ? input.charCodeAt(i + 1) - 5 : 32;
     }
     el.textContent = out;
   }

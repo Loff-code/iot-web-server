@@ -126,22 +126,26 @@ app.post("/data_receiver", (req, res) => {
   let coolState = req.body.coolState;
   let time_stamp = req.body.time_stamp;
   let date_stamp = req.body.date_stamp;
+  let humidity = req.body.humidity;
+  let temperature = req.body.temperature;
 
   console.log("Received sensor_data:", sensorData);
   console.log("Received coolState:", coolState);
   console.log("Received time_stamp:", time_stamp);
   console.log("Received date_stamp:", date_stamp);
 
+  console.log("Received temperature:", temperature);
+  console.log("Received humidity:", humidity);
   if (!sensorData || coolState === undefined) {
     return res.status(400).send("Invalid request");
   }
   coolState = coolState === "true";
   const sql =
-    "INSERT INTO sensor_data (sensor_value, coolState, time_stamp, date_stamp) VALUES (?, ?, ?, ?)";
+    "INSERT INTO sensor_data (sensor_value, coolState, time_stamp, date_stamp, humidity, temperature) VALUES (?, ?, ?, ?, ?, ?)";
 
   db.query(
     sql,
-    [sensorData, coolState, time_stamp, date_stamp],
+    [sensorData, coolState, time_stamp, date_stamp, humidity, temperature],
     (error, results) => {
       if (error) {
         console.error("Error executing SQL statement:", error);
