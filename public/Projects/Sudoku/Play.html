@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sudoku</title>
+  <link rel="icon" href="/images/Logo-modified.png" type="image/png" />
+  <link rel="stylesheet" href="/Style/style.css" />
+  <link rel="stylesheet" href="style.css" />
+  <script type="module" src="/components/header.js"></script>
+  <link rel="prefetch" href="/partials/header.html" as="document">
+  <style>
+    #wrapper {
+      display: flex;
+      justify-content: center;
+      gap: 40px;
+      margin-top: 20px;
+      flex-wrap: wrap;
+    }
+
+    table {
+      border-collapse: collapse;
+      margin: 0 auto;
+    }
+
+    td {
+      width: 40px;
+      height: 40px;
+      text-align: center;
+      vertical-align: middle;
+      font-size: 24px;
+      border: 1px solid #999;
+      transition: background 0.2s;
+    }
+
+    td.fixed {
+      background-color: #eee;
+    }
+
+    td.solved {
+      color: green;
+    }
+
+    button {
+      display: block;
+      margin: 20px auto;
+      padding: 10px 20px;
+      font-size: 16px;
+    }
+
+    h2 {
+      text-align: center;
+    }
+  </style>
+</head>
+
+<body>
+  <header-component></header-component>
+  <div id="wrapper">
+    <div>
+      <h2>Puzzle</h2>
+      <table id="sudoku"></table>
+    </div>
+    <div>
+      <h2>Solution</h2>
+      <table id="solution"></table>
+    </div>
+  </div>
+  <button onclick="startSolver()">Solve</button>
+  <script src="solver.js"></script>
+</body>
+
+</html>
