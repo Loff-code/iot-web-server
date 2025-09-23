@@ -2,57 +2,208 @@
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Loffy - Dashboard</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta charset="utf-8" />
 
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <link rel="icon" href="/images/Logo-modified.png" type="image/png" />
+    <title>Soren Loffy - Portfolio</title>
 
-  <link rel="stylesheet" href="/Style/style.css" />
-  <link rel="stylesheet" href="/Style/indexStyle.css" />
+    <link rel="icon" href="/img/Logo-modified.png" type="image/png" />
 
-  <script type="module" src="/components/header.js"></script>
-  <link rel="prefetch" href="/partials/header.html" as="document">
+    <link rel="stylesheet" href="css/standards.css" />
+    <link rel="stylesheet" href="css/styleguide.css" />
+
+    <script src="/js/header.js"></script>
+    <link rel="stylesheet" href="css/style.css" />
+    <style>
+        .divider {
+            border: none;
+            border-top: 1px solid #444;
+            margin: 15px 0 0 0;
+            width: 100%;
+        }
+    </style>
 </head>
 
 <body>
-  <header-component></header-component>
+    <div id="header"></div>
 
-  <table id="dataTable" border="1"></table>
+    <div class="div-wrapper">
+        <div class="container">
 
-  <div class="button-container">
-    <button onclick="deleteData()">Delete Data</button>
-    <button onclick="downloadJSONAsCSV('/data')">Download the Data</button>
-    <a href="/data" class="button">JSON Data</a>
-  </div>
-  <div style="width: 100vw; height: 40vh;">
-    <canvas id="myChart" style="width: 100%; height: 100%;"></canvas>
-  </div>
+            <!-- Intro -->
+            <div class="frame-5">
+                <div class="frame-6">
+                    <div class="frame-7">
+                        <div class="frame-8">
+                            <div class="computer-engineer" style="text-align: left;">
+                                Soren Peter<br>
+                                Loff<br>
+                                Christensen
+                            </div>
+                            <p class="text-wrapper-3">
+                                5th semester Computer Engineering student with a wide range of interests spanning
+                                hardware, software, and systems. Currently looking for a job in the IT industry.
+                            </p>
+                        </div>
+                        <a href="/pages/iot.html" class="button-3">
+                            <div class="text-wrapper-2">Current Project</div>
+                        </a>
+
+                    </div>
+                    <div class="frame-9">
+                        <img class="rectangle" src="img/rectangle-3791.jpg" />
+                        <div class="computer-engineer">{Computer Engineer}</div>
+                    </div>
+                </div>
+            </div>
 
 
+            <div class="frame-10">
+                <div class="text-wrapper-4">{About me}</div>
+                <div class="frame-11">
+                    <div class="frame-12">
+                        <div class="frame-13">
+                            <div class="text-wrapper-5">Denmark’s Technical <br> University</div>
+                            <div class="text-wrapper-3">Bachelor Computer Engeneering<br />2023-2026</div>
+                        </div>
+                        <button class="button-3">
+                            <div class="text-wrapper-2">Check the full resume</div>
+                        </button>
+                    </div>
+                    <div class="frame-14">
+                        <div class="text-wrapper-6">Languages</div>
+                        <div class="frame-13">
+                            <div class="frame-15">
+                                <div class="frame-16">
+                                    <div class="text-wrapper-7">Java</div>
+                                </div>
+                                <div class="frame-16">
+                                    <div class="text-wrapper-7">C</div>
+                                </div>
+                                <div class="frame-16">
+                                    <div class="text-wrapper-7">C++</div>
+                                </div>
+                                <div class="frame-16">
+                                    <div class="text-wrapper-7">C#</div>
+                                </div>
+                                <div class="frame-16">
+                                    <div class="text-wrapper-7">Scala</div>
+                                </div>
+                                <div class="frame-16">
+                                    <div class="text-wrapper-7">VHDL</div>
+                                </div>
+                            </div>
+                            <div class="frame-17">
+                                <div class="frame-16">
+                                    <div class="text-wrapper-7">RISC-V</div>
+                                </div>
+                                <div class="frame-16">
+                                    <div class="text-wrapper-7">Python</div>
+                                </div>
+                                <div class="frame-16">
+                                    <div class="text-wrapper-7">JavaScript</div>
+                                </div>
+                                <div class="frame-16">
+                                    <div class="text-wrapper-7">SQL</div>
+                                </div>
+                                <div class="frame-16">
+                                    <div class="text-wrapper-7">HTML</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
-  <h3>Control Lights</h3>
-  <form id="lightForm" style="display:flex;flex-direction:row">
-    <div class="checkbox-container"><input onclick="sendRequest()" type="checkbox" id="red" name="red" value="1"
-        data-label="Red"></div>
-    <div class="checkbox-container"><input onclick="sendRequest()" type="checkbox" id="yellow" name="yellow" value="1"
-        data-label="Yellow"></div>
-    <div class="checkbox-container"><input onclick="sendRequest()" type="checkbox" id="green" name="green" value="1"
-        data-label="Green"></div>
-  </form>
+            <!-- My Projects -->
+            <div class="frame-18">
+                <div class="text-wrapper-4">{My Projects}</div>
+                <div class="frame-11">
+                    <div class="frame-19">
+                        <p class="p">
+                            Projects in software and hardware, from networks and web apps to embedded systems and CPU
+                            design. Built to learn by doing.
+                        </p>
+                        <div class="button-4">
+                            <a href="https://github.com/Loff-code" class="text-wrapper-2">Find more on my GitHub</a>
+                        </div>
+                    </div>
 
-  <form id="frqForm" style="margin-top:1rem">
-    <label for="frq">Frequency:</label>
-    <input type="number" id="frq" name="frq" required>
-    <button type="submit">Set Frequency</button>
-  </form>
+                    <div class="frame-20">
 
-  <button onclick="createSine()">Add sine data</button>
 
-  <script src="/Script/database.js"></script>
-  <script src="/Script/index.js"></script>
-  <script src="/Script/graph.js"></script>
+                        <div class="frame-21">
+                            <div class="frame-22">
+                                <div class="frame-23">
+                                    <div class="text-wrapper-6">IOT web server</div>
+                                    <p class="text-wrapper-3">
+                                        Personal webserver for learning about dynamic websites, databases, IOT and
+                                        network.
+                                    </p>
+                                </div>
+                                <div class="see-the-project">
+                                    <a href="https://github.com/Loff-code/iot-web-server">See the project</a> =&gt;
+                                </div>
+                            </div>
+                            <hr class="divider">
+                        </div>
+
+
+                        <div class="frame-21">
+                            <div class="frame-22">
+                                <div class="frame-23">
+                                    <div class="text-wrapper-6">IOT ESP32 Project</div>
+                                    <p class="text-wrapper-3">
+                                        Project to learn more about IOT, with the ESP32 using Arduino framework.
+                                    </p>
+                                </div>
+                                <div class="see-the-project">
+                                    <a href="https://github.com/Loff-code/ESP32-Project">See the project</a> =&gt;
+                                </div>
+                            </div>
+                            <hr class="divider">
+                        </div>
+
+
+                        <div class="frame-22">
+                            <div class="frame-23">
+                                <div class="text-wrapper-6">Project Management App</div>
+                                <p class="text-wrapper-3">
+                                    Project Management App University project that handles registration of times
+                                    for employees.
+                                </p>
+                            </div>
+                            <div class="see-the-project">
+                                <a href="https://github.com/Loff-code/Application-For-Project-Management">See the
+                                    project</a> =&gt;
+                            </div>
+                        </div>
+
+                    </div>
+
+
+                    <div class="frame-24">
+                        <div class="frame-25">
+                            <div class="frame-26">
+                                <div class="contact-me">{Contact me}</div>
+                                <div class="frame-27">
+                                    <p class="text-wrapper-8">
+                                        Do you have an interesting job, project or other opportunity?
+                                        <span class="linebreak-lg"><br></span>
+                                        Please feel free to contact me.
+                                    </p>
+
+                                    <a href="/pages/iot.html" class="button-5">
+                                        <div class="text-wrapper-9">Current Project</div>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="text-wrapper-10">soren.loffy@gmail.com</div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
 </body>
 
 </html>

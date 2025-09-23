@@ -1,0 +1,57 @@
+<header class="blog-header"><!-- NEW wrapper -->
+
+  <!-- logo -->
+  <a href="/index.html" class="logo-link" aria-label="Home">
+    <img src="/images/Logo.png" alt="Loffy logo">
+  </a>
+
+  <!-- dropdown -->
+  <div class="dropdown">
+    <button class="dropbtn" aria-label="Open menu"></button>
+    <div class="dropdown-content">
+      <a class="next" href="/Projects/RPSS/Play.html">Rock Paper Scissor</a>
+      <a class="next" href="/Projects/vendingMachine/vender.html">Vending Machine</a>
+      <a class="next" href="/Projects/Etch/Color/Etch.html">Etch a sketch</a>
+      <a class="next" href="/Projects/Sudoku/Play.html">Sudoku</a>
+      <a class="next" href="/Projects/MineSweeper/Play.html">Mine Sweeper</a>
+    </div>
+  </div>
+
+  <!-- auth controls -->
+  <div class="auth">
+    <span id="who"></span>
+    <button id="loginBtn">Log&nbsp;in</button>
+    <button id="registerBtn">Register</button>
+    <button id="logoutBtn" style="display:none">Log&nbsp;out</button>
+  </div>
+</header>
+
+<!-- modal lives outside the header wrapper on purpose -->
+<div id="loginModal" class="modal" aria-hidden="true">
+  <div class="box" role="dialog" aria-modal="true" aria-labelledby="loginTitle">
+    <button class="close" aria-label="Close">&times;</button>
+    <h2 id="loginTitle" style="margin-top:0;color:#fff">Log in</h2>
+    <form id="loginForm">
+      <input name="email" type="email" placeholder="Email" required autofocus>
+      <input name="password" type="password" placeholder="Password" required>
+      <button type="submit">Log in</button>
+      <p id="loginErr" class="error"></p>
+    </form>
+  </div>
+</div>
+
+
+<!-- register modal (new) -->
+<div id="registerModal" class="modal" aria-hidden="true">
+  <div class="box" role="dialog" aria-modal="true" aria-labelledby="regTitle">
+    <button class="close" aria-label="Close">&times;</button>
+    <h2 id="regTitle" style="margin-top:0;color:#fff">Register</h2>
+    <form id="registerForm">
+      <input name="email" type="email" placeholder="Email" required autofocus>
+      <input name="name" type="text" placeholder="Display name" required>
+      <input name="password" type="password" placeholder="Password" required>
+      <button type="submit">Create account</button>
+      <p id="regErr" class="error"></p>
+    </form>
+  </div>
+</div>

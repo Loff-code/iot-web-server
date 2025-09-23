@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Loffy - IOT Project</title>
+
+  <link rel="icon" href="/img/Logo-modified.png" type="image/png" />
+  <link rel="stylesheet" href="/css/standards.css" />
+  <link rel="stylesheet" href="/css/pages/iot.css" />
+  <script src="/js/header.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body>
+  <div id="header"></div>
+
+  <table id="dataTable" border="1"></table>
+
+  <div class="button-container">
+    <button onclick="deleteData()">Delete Data</button>
+    <button onclick="downloadJSONAsCSV('/data')">Download the Data</button>
+    <a href="/data" class="button">JSON Data</a>
+  </div>
+  <div style="width: 100vw; height: 40vh;">
+    <canvas id="myChart" style="width: 100%; height: 100%;"></canvas>
+  </div>
+
+
+
+  <h3>Control Lights</h3>
+  <form id="lightForm" style="display:flex;flex-direction:row">
+    <div class="checkbox-container"><input onclick="sendRequest()" type="checkbox" id="red" name="red" value="1"
+        data-label="Red"></div>
+    <div class="checkbox-container"><input onclick="sendRequest()" type="checkbox" id="yellow" name="yellow" value="1"
+        data-label="Yellow"></div>
+    <div class="checkbox-container"><input onclick="sendRequest()" type="checkbox" id="green" name="green" value="1"
+        data-label="Green"></div>
+  </form>
+
+  <form id="frqForm" style="margin-top:1rem">
+    <label for="frq">Frequency:</label>
+    <input type="number" id="frq" name="frq" required>
+    <button type="submit">Set Frequency</button>
+  </form>
+
+  <button onclick="createSine()">Add sine data</button>
+
+  <script src="/js/database.js"></script>
+  <script src="/js/index.js"></script>
+  <script src="/js/graph.js"></script>
+</body>
+
+</html>

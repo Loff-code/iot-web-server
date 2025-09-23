@@ -1,0 +1,84 @@
+/* header.css */
+
+.site-header {
+  background-color: #1a1a1d;
+  padding: 15px 0;
+}
+
+.header-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.nav-left a {
+  color: #ffffff;
+  margin-right: 30px;
+}
+
+.nav-left a.logo {
+  font-weight: bold;
+}
+
+.nav-right {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+/* Burger menu + dropdown */
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.burger {
+  font-size: 22px;
+  background: none;
+  border: none;
+  color: white;
+  cursor: pointer;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  top: 100%; /* directly under burger */
+  right: 0;
+  background-color: #fff;
+  color: #1a1a1d;
+  min-width: 220px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+  border-radius: 12px;
+  padding: 10px 0;
+  z-index: 1000;
+}
+
+.dropdown-content a {
+  display: flex;
+  align-items: center;
+  padding: 10px 20px;
+  font-family: "Inter", sans-serif;
+  font-size: 0.95rem;
+  color: #1a1a1d;
+  transition: background 0.2s ease;
+}
+
+.dropdown-content a:hover {
+  background-color: #f2f2f2;
+}
+
+.dropdown-content hr {
+  border: none;
+  border-top: 1px solid #ddd;
+  margin: 5px 0;
+}
+
+.dropdown-content .logout {
+  color: #b00;
+}
+
+/* Show dropdown on hover */
+.dropdown:hover .dropdown-content {
+  display: block;
+}

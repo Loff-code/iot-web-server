@@ -1,0 +1,15 @@
+5th semester Computer Engineering student with a wide range of interests spanning hardware, software, and systems.
+
+Projects in software and hardware, from networks and web apps to embedded systems and CPU design. Built to learn by doing.
+
+
+IOT web server
+Personal webserver for learning about dynamic websites, databases, IOT and network. 
+
+IOT ESP32 Project
+Project to learn more about IOT, with the ESP32. Using Arduino framework 
+
+Project Management App
+University project from software engineering course
+
+
