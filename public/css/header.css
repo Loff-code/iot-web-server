@@ -1,5 +1,3 @@
-/* header.css */
-
 .site-header {
   background-color: #1a1a1d;
   padding: 15px 0;
@@ -26,12 +24,36 @@
   gap: 15px;
 }
 
-/* Burger menu + dropdown */
+button {
+  font-family: inherit;
+  font-size: 1rem;
+  font-weight: 500;
+  border-radius: 10px;
+  padding: 10px 20px;
+  cursor: pointer;
+  border: 1px solid white;
+}
+
+.btn-light {
+  background-color: #ffffff;
+  color: #1a1a1d;
+}
+
+.btn-dark {
+  background: transparent;
+  color: #ffffff;
+}
+
+button:hover {
+  background-color: transparent;
+  color: #fbfbfb;
+}
+
+/* Burger dropdown */
 .dropdown {
   position: relative;
   display: inline-block;
 }
-
 .burger {
   font-size: 22px;
   background: none;
@@ -39,11 +61,10 @@
   color: white;
   cursor: pointer;
 }
-
 .dropdown-content {
   display: none;
   position: absolute;
-  top: 100%; /* directly under burger */
+  top: 100%;
   right: 0;
   background-color: #fff;
   color: #1a1a1d;
@@ -53,7 +74,6 @@
   padding: 10px 0;
   z-index: 1000;
 }
-
 .dropdown-content a {
   display: flex;
   align-items: center;
@@ -63,22 +83,56 @@
   color: #1a1a1d;
   transition: background 0.2s ease;
 }
-
 .dropdown-content a:hover {
   background-color: #f2f2f2;
 }
-
-.dropdown-content hr {
-  border: none;
-  border-top: 1px solid #ddd;
-  margin: 5px 0;
-}
-
-.dropdown-content .logout {
-  color: #b00;
-}
-
-/* Show dropdown on hover */
 .dropdown:hover .dropdown-content {
   display: block;
+}
+
+/* Modal */
+.modal {
+  display: none;
+  position: fixed;
+  inset: 0;
+  justify-content: center;
+  align-items: center;
+  background: rgba(0,0,0,.5);
+  z-index: 1000;
+}
+.modal-content {
+  background: #0f4a61;
+  padding: 2rem;
+  border-radius: 8px;
+  color: #fff;
+  min-width: 260px;
+  position: relative;
+}
+.modal-close {
+  position: absolute;
+  top: .5rem;
+  right: .75rem;
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+.modal input {
+  display: block;
+  width: 100%;
+  margin: .5rem 0;
+  padding: .5rem;
+  border-radius: 6px;
+  border: none;
+}
+.modal button {
+  margin-top: 1rem;
+  width: 100%;
+  padding: .6rem;
+  border: none;
+  border-radius: 6px;
+  background: #3498db;
+  color: #fff;
+  cursor: pointer;
+}
+.modal button:hover {
+  background: #2980b9;
 }
