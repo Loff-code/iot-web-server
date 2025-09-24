@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta charset="utf-8" />
 
-    <title>Soren Loffy - Portfolio</title>
+    <title>Loffy - Landing Page</title>
 
     <link rel="icon" href="/img/Logo-modified.png" type="image/png" />
 
@@ -66,9 +66,10 @@
                             <div class="text-wrapper-5">Denmark’s Technical <br> University</div>
                             <div class="text-wrapper-3">Bachelor Computer Engeneering<br />2023-2026</div>
                         </div>
-                        <button class="button-3">
+
+                        <a href="/pages/iot.html" class="button-3">
                             <div class="text-wrapper-2">Check the full resume</div>
-                        </button>
+                        </a>
                     </div>
                     <div class="frame-14">
                         <div class="text-wrapper-6">Languages</div>
@@ -114,8 +115,6 @@
                     </div>
                 </div>
             </div>
-
-            <!-- My Projects -->
             <div class="frame-18">
                 <div class="text-wrapper-4">{My Projects}</div>
                 <div class="frame-11">
@@ -204,6 +203,27 @@
 
                 </div>
             </div>
+
+
+            <!-- Login Modal -->
+            <div id="loginModal" class="modal">
+                <div class="modal-content">
+                    <span class="close">&times;</span>
+                    <h2>Log In</h2>
+                    <form id="loginForm">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" placeholder="Enter email" required>
+
+                        <label for="password">Password</label>
+                        <input type="password" id="password" placeholder="Enter password" required>
+
+                        <button type="submit" class="btn btn-dark">Log In</button>
+                    </form>
+                </div>
+            </div>
+
 </body>
+
+
 
 </html>
