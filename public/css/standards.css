@@ -89,3 +89,26 @@ button:hover, .button:hover, .btn:hover {
   background-color: transparent;
   color: #fbfbfb;
 }
+
+
+.btn-light {
+  background-color: #ffffff;
+  color: #1a1a1d;
+}
+
+.btn-dark {
+  background: transparent;
+  color: #ffffff;
+  border: 1px solid #ffffff;
+}
+
+/* Hover styles */
+.btn-light:hover {
+  background-color: transparent;
+  color: #ffffff;
+}
+
+.btn-dark:hover {
+  background-color: #ffffff;
+  color: #1a1a1d;
+}

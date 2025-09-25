@@ -10,20 +10,18 @@
         </div>
 
         <div class="nav-right">
+            <span id="who"></span>
             <button id="registerBtn" class="btn btn-light">Sign Up</button>
             <button id="loginBtn" class="btn btn-dark">Log In</button>
+            <button id="logoutBtn" class="btn btn-dark" style="display:none;">Log Out</button>
 
             <!-- Burger dropdown -->
             <div class="dropdown">
-                <button class="burger" aria-label="Menu">&#9776;</button>
+                <button class="btn burger btn-light" aria-label="Menu">&#9776;</button>
                 <div class="dropdown-content">
-                    <a href="#">Rock Paper Scissors</a>
-                    <a href="#">Vending Machine</a>
-                    <a href="#">Etch a sketch</a>
-                    <a href="#">Sudoku</a>
-                    <a href="#">Mine Sweeper</a>
-                    <hr>
-                    <a href="#" id="burgerLogout">Log out</a>
+                    <a href="/pages/iot.html">IOT Page</a>
+                    <a href="/pages/Sudoku/Play.html">Sudoku</a>
+                    <a href="/pages/MineSweeper/Play.html">Mine Sweeper</a>
                 </div>
             </div>
         </div>
@@ -44,6 +42,27 @@
 
             <button type="submit">Log In</button>
             <div id="loginErr" class="error"></div>
+        </form>
+    </div>
+</div>
+
+<!-- Register Modal -->
+<div id="registerModal" class="modal">
+    <div class="modal-content">
+        <span class="modal-close">&times;</span>
+        <h3>Sign Up</h3>
+        <form id="registerForm">
+            <label for="regName">Name</label>
+            <input id="regName" name="name" type="text" required>
+
+            <label for="regEmail">Email</label>
+            <input id="regEmail" name="email" type="email" required>
+
+            <label for="regPassword">Password</label>
+            <input id="regPassword" name="password" type="password" required>
+
+            <button type="submit">Sign Up</button>
+            <div id="registerErr" class="error"></div>
         </form>
     </div>
 </div>

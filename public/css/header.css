@@ -1,6 +1,6 @@
 .site-header {
   background-color: #1a1a1d;
-  padding: 15px 0;
+  padding: 15px 60px;
 }
 
 .header-content {
@@ -22,6 +22,12 @@
   display: flex;
   align-items: center;
   gap: 15px;
+}
+
+#who {
+  color: #ffffff;
+  font-weight: 500;
+  margin-right: 10px;
 }
 
 button {
@@ -56,11 +62,11 @@ button:hover {
 }
 .burger {
   font-size: 22px;
-  background: none;
-  border: none;
-  color: white;
-  cursor: pointer;
+  /* padding: 7px 15px; */
 }
+
+
+
 .dropdown-content {
   display: none;
   position: absolute;
@@ -134,5 +140,33 @@ button:hover {
   cursor: pointer;
 }
 .modal button:hover {
-  background: #2980b9;
+  background: #1d1d1d;
 }
+.error {
+  color: #ff7070;
+  font-size: .85rem;
+  margin-top: .5rem;
+}
+
+.btn-light {
+  background-color: #ffffff;
+  color: #1d1d1d;
+}
+
+.btn-dark {
+  background: transparent;
+  color: #ffffff;
+  border: 1px solid #ffffff;
+}
+
+/* Hover styles */
+.btn-light:hover {
+  background-color: transparent;
+  color: #ffffff;
+}
+
+.btn-dark:hover {
+  background-color: #ffffff;
+  color: #1d1d1d;
+}
+

@@ -1,0 +1,32 @@
+/* Sudoku-specific styles only */
+
+.sudoku-wrapper {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  margin-top: 2rem;
+  overflow-x: auto;
+}
+
+.sudoku-grid {
+  border-collapse: collapse;
+  margin: 0 auto;
+}
+
+.sudoku-grid td {
+  width: 40px;
+  height: 40px;
+  text-align: center;
+  font-size: 1.2rem;
+  border: 1px solid #999;
+  color: #fbfbfb;
+}
+
+.fixed {
+  background-color: #333;
+  font-weight: bold;
+}
+
+.solved {
+  color: #4ade80; /* green */
+}

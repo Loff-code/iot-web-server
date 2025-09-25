@@ -8,6 +8,7 @@ async function fetchSudokuData() {
 
 function rules(board, row, col) {
   const num = board[row][col];
+  if (num === 0) return true;
   for (let i = 0; i < 9; i++) {
     if ((board[row][i] === num && i !== col) || (board[i][col] === num && i !== row)) return true;
   }

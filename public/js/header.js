@@ -1,30 +1,75 @@
+function sleep(ms) {
+    return new Promise(r => setTimeout(r, ms));
+}
+
+async function printer(el, input) {
+    let out = '';
+    let currentChar = input.charCodeAt(0) - 5 >= 32 ? input.charCodeAt(0) - 5 : 32;
+    for (let i = 0; i < input.length; i++) {
+        const target = input.charCodeAt(i);
+        while (currentChar < target) {
+            el.textContent = out + String.fromCharCode(currentChar);
+            await sleep(50);
+            currentChar++;
+        }
+        out += String.fromCharCode(currentChar);
+        currentChar = input.charCodeAt(i + 1) - 5 >= 32 ? input.charCodeAt(i + 1) - 5 : 32;
+    }
+    el.textContent = out;
+}
+
 fetch("/partials/header.html")
     .then(res => res.text())
     .then(data => {
         document.getElementById("header").innerHTML = data;
 
-        // Modal logic
-        const modal = document.getElementById("loginModal");
+        const who = document.getElementById("who");
         const loginBtn = document.getElementById("loginBtn");
-        const closeBtn = modal.querySelector(".modal-close");
+        const registerBtn = document.getElementById("registerBtn");
+        const logoutBtn = document.getElementById("logoutBtn");
+
+        const loginModal = document.getElementById("loginModal");
+        const loginClose = loginModal.querySelector(".modal-close");
         const loginForm = document.getElementById("loginForm");
         const loginErr = document.getElementById("loginErr");
 
-        loginBtn.addEventListener("click", () => {
-            modal.style.display = "flex";
+        const registerModal = document.getElementById("registerModal");
+        const registerClose = registerModal.querySelector(".modal-close");
+        const registerForm = document.getElementById("registerForm");
+        const registerErr = document.getElementById("registerErr");
+
+        // Modal open/close
+        loginBtn.addEventListener("click", () => loginModal.style.display = "flex");
+        loginClose.addEventListener("click", () => loginModal.style.display = "none");
+        registerBtn.addEventListener("click", () => registerModal.style.display = "flex");
+        registerClose.addEventListener("click", () => registerModal.style.display = "none");
+        window.addEventListener("click", e => {
+            if (e.target === loginModal) loginModal.style.display = "none";
+            if (e.target === registerModal) registerModal.style.display = "none";
         });
 
-        closeBtn.addEventListener("click", () => {
-            modal.style.display = "none";
-        });
-
-        window.addEventListener("click", (e) => {
-            if (e.target === modal) {
-                modal.style.display = "none";
+        // Refresh session state
+        async function refreshSession() {
+            const res = await fetch("/me", { credentials: "same-origin" });
+            if (res.ok) {
+                const { user } = await res.json();
+                if (user) {
+                    who.textContent = "";
+                    printer(who, `Welcome, ${user.name}!`);
+                    loginBtn.style.display = "none";
+                    registerBtn.style.display = "none";
+                    logoutBtn.style.display = "inline-block";
+                } else {
+                    who.textContent = "";
+                    loginBtn.style.display = "inline-block";
+                    registerBtn.style.display = "inline-block";
+                    logoutBtn.style.display = "none";
+                }
             }
-        });
+        }
+        refreshSession();
 
-        // Handle login form submission
+        // Login submit
         loginForm.addEventListener("submit", async (e) => {
             e.preventDefault();
             loginErr.textContent = "";
@@ -34,23 +79,50 @@ fetch("/partials/header.html")
                 password: document.getElementById("loginPassword").value
             };
 
-            try {
-                const res = await fetch("/login", {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify(data),
-                    credentials: "same-origin"
-                });
+            const res = await fetch("/login", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(data),
+                credentials: "same-origin"
+            });
 
-                if (res.ok) {
-                    modal.style.display = "none"; // close modal
-                    window.location.reload();     // refresh page to reflect logged-in state
-                } else {
-                    loginErr.textContent = await res.text();
-                }
-            } catch (err) {
-                loginErr.textContent = "Network error";
-                console.error(err);
+            if (res.ok) {
+                loginModal.style.display = "none";
+                refreshSession();
+            } else {
+                loginErr.textContent = await res.text();
             }
+        });
+
+        // Register submit
+        registerForm.addEventListener("submit", async (e) => {
+            e.preventDefault();
+            registerErr.textContent = "";
+
+            const data = {
+                name: document.getElementById("regName").value,
+                email: document.getElementById("regEmail").value,
+                password: document.getElementById("regPassword").value
+            };
+
+            const res = await fetch("/register", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(data),
+                credentials: "same-origin"
+            });
+
+            if (res.ok) {
+                registerModal.style.display = "none";
+                refreshSession();
+            } else {
+                registerErr.textContent = await res.text();
+            }
+        });
+
+        // Logout
+        logoutBtn.addEventListener("click", async () => {
+            await fetch("/logout", { method: "POST", credentials: "same-origin" });
+            refreshSession();
         });
     });
