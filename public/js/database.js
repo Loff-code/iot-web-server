@@ -1,5 +1,4 @@
-const host = "";           // e.g. "//192.168.68.110" if needed
-
+const host = "";
 function sendFrequency(e) {
   e.preventDefault();
   const formData = new FormData(document.getElementById('frqForm'));
@@ -48,4 +47,24 @@ async function createSine() {
 }
 
 
-function deleteData() { fetch('/api/sensors', { method: 'DELETE' }).then(slcDataToTable); }
+async function deleteData() {
+  try {
+    const res = await fetch('/api/auth/me', { method: 'GET' });
+    if (!res.ok) {
+      alert('You must be logged in to delete data');
+      return;
+    }
+
+    const me = await res.json();
+
+    if (me && me.id) {
+      await fetch('/api/sensors', { method: 'DELETE' });
+      slcDataToTable();
+    } else {
+      alert('You must be logged in to delete data');
+    }
+  } catch (err) {
+    console.error('Error deleting data:', err);
+  }
+}
+
