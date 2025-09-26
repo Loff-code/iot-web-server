@@ -29,17 +29,15 @@ function updChart() {
       const ids = data.map((row) => row.time_stamp);
       const sensorValues = data.map((row) => parseFloat(row.sensor_value));
 
-      // Update the chart with new data
       chart.data.labels = ids;
       chart.data.datasets[0].data = sensorValues;
       chart.update();
 
-      // Set point color based on sensor value
       const pointColor = sensorValues.map((value, index) =>
         index === 0
           ? "rgba(0, 0, 0, 1)"
           : index === sensorValues.length - 1
-            ? "rgba(0, 0, 0, 1)" // Set last point color to black
+            ? "rgba(0, 0, 0, 1)"
             : value < 800
               ? "rgba(255, 0, 0, 1)"
               : value > 3200

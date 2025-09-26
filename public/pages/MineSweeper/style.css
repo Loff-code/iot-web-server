@@ -1,4 +1,4 @@
-/* Minesweeper board */
+
 #board {
   display: grid;
   grid-template-columns: repeat(20, 30px);
@@ -7,7 +7,6 @@
   width: fit-content;
 }
 
-/* Each cell */
 .cell {
   width: 30px;
   height: 30px;
@@ -22,7 +21,6 @@
   user-select: none;
 }
 
-/* States */
 .revealed {
   background-color: #ddd;
   cursor: default;

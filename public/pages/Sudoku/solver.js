@@ -6,20 +6,18 @@ async function fetchSudokuData() {
   return { puzzle, solution };
 }
 
-function rules(board, row, col) {
-  const num = board[row][col];
-  if (num === 0) return true;
+function isValid(board, row, col, num) {
   for (let i = 0; i < 9; i++) {
-    if ((board[row][i] === num && i !== col) || (board[i][col] === num && i !== row)) return true;
+    if (board[row][i] === num || board[i][col] === num) return false;
   }
   const startRow = Math.floor(row / 3) * 3;
   const startCol = Math.floor(col / 3) * 3;
-  for (let i = startRow; i < startRow + 3; i++) {
-    for (let j = startCol; j < startCol + 3; j++) {
-      if (board[i][j] === num && (i !== row || j !== col)) return true;
+  for (let i = 0; i < 3; i++) {
+    for (let j = 0; j < 3; j++) {
+      if (board[startRow + i][startCol + j] === num) return false;
     }
   }
-  return false;
+  return true;
 }
 
 function sleep(ms) {
@@ -31,17 +29,17 @@ async function recursive(board, std, row, col) {
   const nextRow = row + Math.floor((col + 1) / 9);
   const nextCol = (col + 1) % 9;
   if (std[row][col]) return await recursive(board, std, nextRow, nextCol);
-  for (let i = 1; i <= 9; i++) {
-    board[row][col] = i;
-    if (!rules(board, row, col)) {
-      updateCell(row, col, i);
+  for (let num = 1; num <= 9; num++) {
+    if (isValid(board, row, col, num)) {
+      board[row][col] = num;
+      updateCell(row, col, num);
       await sleep(20);
       if (await recursive(board, std, nextRow, nextCol)) return true;
+      board[row][col] = 0;
+      updateCell(row, col, '');
+      await sleep(20);
     }
   }
-  board[row][col] = 0;
-  updateCell(row, col, '');
-  await sleep(20);
   return false;
 }
 

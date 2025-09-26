@@ -8,11 +8,10 @@ const {
     deleteState
 } = require("../controllers/devicesController");
 
-// Routes
-router.get("/state", getState);          // GET /api/devices/state
-router.get("/frq", getFrq);              // GET /api/devices/frq
-router.post("/light", insertLightState); // POST /api/devices/light
-router.post("/frq", insertFrq);          // POST /api/devices/frq
-router.delete("/state", deleteState);    // DELETE /api/devices/state
+router.get("/state", getState);
+router.get("/frq", getFrq);
+router.post("/light", insertLightState);
+router.post("/frq", insertFrq);
+router.delete("/state", deleteState);
 
 module.exports = router;

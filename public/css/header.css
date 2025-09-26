@@ -1,7 +1,15 @@
 .site-header {
   background-color: #1a1a1d;
   padding: 15px 60px;
+
+  position: fixed;   
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 2000;    
+  opacity: 0.9;
 }
+
 
 .header-content {
   display: flex;
@@ -55,7 +63,6 @@ button:hover {
   color: #fbfbfb;
 }
 
-/* Burger dropdown */
 .dropdown {
   position: relative;
   display: inline-block;
@@ -96,7 +103,6 @@ button:hover {
   display: block;
 }
 
-/* Modal */
 .modal {
   display: none;
   position: fixed;
@@ -159,7 +165,6 @@ button:hover {
   border: 1px solid #ffffff;
 }
 
-/* Hover styles */
 .btn-light:hover {
   background-color: transparent;
   color: #ffffff;

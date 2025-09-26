@@ -1,8 +1,4 @@
-/* =======================
-   Standard Global Styles
-   ======================= */
 
-/* Reset basics */
 * {
   box-sizing: border-box;
   -webkit-font-smoothing: antialiased;
@@ -13,26 +9,20 @@
 html, body {
   height: 100%;
   width: 100%;
-  background-color: #1a1a1d;   /* dark background */
-  color: #fbfbfb;              /* white text */
+  background-color: #1a1a1d;  
+  color: #fbfbfb;             
   font-family: "Inter", Helvetica, Arial, sans-serif;
   line-height: 1.5;
 }
 
-/* =======================
-   Container
-   ======================= */
 .container {
   width: 100%;
-  max-width: 1700px; /* consistent with landing page */
+  max-width: 1700px; 
   margin: 0 auto;
   padding: 0 20px;
   box-sizing: border-box;
 }
 
-/* =======================
-   Typography
-   ======================= */
 h1, h2, h3, h4 {
   font-family: "Pangea", Helvetica, sans-serif;
   font-weight: 500;
@@ -61,9 +51,6 @@ a:hover {
   text-decoration: underline;
 }
 
-/* =======================
-   Buttons
-   ======================= */
 button, .button, .btn {
   font-family: inherit;
   font-size: 1rem;
@@ -102,7 +89,6 @@ button:hover, .button:hover, .btn:hover {
   border: 1px solid #ffffff;
 }
 
-/* Hover styles */
 .btn-light:hover {
   background-color: transparent;
   color: #ffffff;
@@ -111,4 +97,8 @@ button:hover, .button:hover, .btn:hover {
 .btn-dark:hover {
   background-color: #ffffff;
   color: #1a1a1d;
+}
+
+body {
+  margin-top: 80px;
 }

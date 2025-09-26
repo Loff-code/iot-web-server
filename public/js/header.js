@@ -38,7 +38,6 @@ fetch("/partials/header.html")
         const registerForm = document.getElementById("registerForm");
         const registerErr = document.getElementById("registerErr");
 
-        // Modal open/close
         loginBtn.addEventListener("click", () => loginModal.style.display = "flex");
         loginClose.addEventListener("click", () => loginModal.style.display = "none");
         registerBtn.addEventListener("click", () => registerModal.style.display = "flex");
@@ -48,7 +47,6 @@ fetch("/partials/header.html")
             if (e.target === registerModal) registerModal.style.display = "none";
         });
 
-        // Refresh session state
         async function refreshSession() {
             const res = await fetch("/api/auth/me", { credentials: "same-origin" });
             if (res.ok) {
@@ -69,7 +67,6 @@ fetch("/partials/header.html")
         }
         refreshSession();
 
-        // Login submit
         loginForm.addEventListener("submit", async (e) => {
             e.preventDefault();
             loginErr.textContent = "";
@@ -94,7 +91,6 @@ fetch("/partials/header.html")
             }
         });
 
-        // Register submit
         registerForm.addEventListener("submit", async (e) => {
             e.preventDefault();
             registerErr.textContent = "";
@@ -120,7 +116,6 @@ fetch("/partials/header.html")
             }
         });
 
-        // Logout
         logoutBtn.addEventListener("click", async () => {
             await fetch("/api/auth/logout", { method: "POST", credentials: "same-origin" });
             refreshSession();

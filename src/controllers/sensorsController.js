@@ -15,17 +15,27 @@ exports.getLatestData = (req, res) => {
 };
 
 exports.insertData = (req, res) => {
-    const { sensor_data, coolState, time_stamp, date_stamp, humidity, temperature } = req.body;
+    let { sensor_data, coolState, time_stamp, date_stamp, humidity, temperature } = req.body;
 
-    if (!sensor_data || coolState === undefined) {
+    if (sensor_data === undefined || coolState === undefined) {
         return res.status(400).send("Invalid request");
     }
 
-    const sql =
-        "INSERT INTO sensor_data (sensor_value, coolState, time_stamp, date_stamp, humidity, temperature) VALUES (?, ?, ?, ?, ?, ?)";
+    sensor_data = parseFloat(sensor_data);
+    humidity = humidity ? parseFloat(humidity) : null;
+    temperature = temperature ? parseFloat(temperature) : null;
+    coolState = (coolState === true || coolState === "true") ? 1 : 0;
+
+    const sql = `
+    INSERT INTO sensor_data (sensor_value, coolState, time_stamp, date_stamp, humidity, temperature)
+    VALUES (?, ?, ?, ?, ?, ?)
+  `;
 
     db.query(sql, [sensor_data, coolState, time_stamp, date_stamp, humidity, temperature], (err) => {
-        if (err) return res.status(500).send("DB error");
+        if (err) {
+            console.error("DB error:", err);
+            return res.status(500).send("DB error: " + err.message);
+        }
         res.send("Sensor data inserted successfully");
     });
 };

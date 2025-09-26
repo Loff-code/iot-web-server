@@ -3,7 +3,6 @@ const express = require("express");
 const session = require("express-session");
 const path = require("path");
 
-// Route modules
 const sensorsRoutes = require("./src/routes/sensors");
 const devicesRoutes = require("./src/routes/devices");
 const authRoutes = require("./src/routes/auth");

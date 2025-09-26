@@ -3,7 +3,7 @@
   width: 100%;
   display: flex;
   flex-direction: column;
-  min-height: 100vh; /* fills screen but no forced scroll */
+  min-height: 100vh; 
 }
 
 .container {
@@ -525,8 +525,8 @@
 }
 
 .div-wrapper .frame-24 {
-  width: 100%;                 /* fill parent width */
-  margin: 80px 0 0 0;           /* normal spacing on top */
+  width: 100%;                  
+  margin: 80px 0 0 0;          
   flex-direction: column;
   align-items: flex-start;
   justify-content: flex-end;
@@ -603,7 +603,6 @@
   all: unset;
   box-sizing: border-box;
   gap: 13.45px;
-  /* margin-top: 30px; */
   padding: 20px 36px;
   background-color: #1b1b1d;
   display: inline-flex;
@@ -656,7 +655,6 @@
   }
 }
 
-/* hover fixes */
 .div-wrapper .button:hover,
 .div-wrapper .button-3:hover,
 .div-wrapper .button-4:hover,
@@ -691,6 +689,10 @@ html, body {
   padding: 0;
   overflow-x: hidden;
 }
+body {
+  margin-top: 20px; 
+}
+
 .frame-6 {
   display: flex;
   flex-direction: row;
@@ -715,10 +717,10 @@ html, body {
 
 
 .frame-25,
-/* .frame-26, */
+
 .frame-27 {
   display: flex;
-  flex-direction: column;   /* stack items vertically */
-  align-items: flex-start;  /* keep them aligned left */
-  gap: 20px;                /* space between elements */
+  flex-direction: column;  
+  align-items: flex-start; 
+  gap: 20px;               
 }
