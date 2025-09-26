@@ -50,7 +50,7 @@ fetch("/partials/header.html")
 
         // Refresh session state
         async function refreshSession() {
-            const res = await fetch("/me", { credentials: "same-origin" });
+            const res = await fetch("/api/auth/me", { credentials: "same-origin" });
             if (res.ok) {
                 const { user } = await res.json();
                 if (user) {
@@ -79,7 +79,7 @@ fetch("/partials/header.html")
                 password: document.getElementById("loginPassword").value
             };
 
-            const res = await fetch("/login", {
+            const res = await fetch("/api/auth/login", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(data),
@@ -105,7 +105,7 @@ fetch("/partials/header.html")
                 password: document.getElementById("regPassword").value
             };
 
-            const res = await fetch("/register", {
+            const res = await fetch("/api/auth/register", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(data),
@@ -122,7 +122,7 @@ fetch("/partials/header.html")
 
         // Logout
         logoutBtn.addEventListener("click", async () => {
-            await fetch("/logout", { method: "POST", credentials: "same-origin" });
+            await fetch("/api/auth/logout", { method: "POST", credentials: "same-origin" });
             refreshSession();
         });
     });

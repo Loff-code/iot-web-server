@@ -10,7 +10,7 @@ function addRow(tableId, data, rowIndex) {
   data.forEach((arr, i) => { const cell = row.insertCell(i); cell.innerText = arr[arr.length - rowIndex]; });
 }
 function slcDataToTable() {
-  fetch('/data').then(r => r.json()).then(data => {
+  fetch('/api/sensors').then(r => r.json()).then(data => {
     const table = document.getElementById('dataTable');
     table.innerHTML = '';
     const ids = data.map(r => r.id);

@@ -23,7 +23,7 @@ function initChart() {
 }
 
 function updChart() {
-  fetch("/data")
+  fetch("/api/sensors")
     .then((response) => response.json())
     .then((data) => {
       const ids = data.map((row) => row.time_stamp);
@@ -53,7 +53,7 @@ function updChart() {
 }
 
 function fullDataToTable() {
-  fetch("/data")
+  fetch("/api/sensors")
     .then((response) => response.json())
     .then((data) => {
       const ids = data.map((row) => row.id);
@@ -75,7 +75,7 @@ function fullDataToTable() {
 }
 
 function slcDataToTable() {
-  fetch("/data")
+  fetch("/api/sensors")
     .then((response) => response.json())
     .then((data) => {
       const ids = data.map((row) => row.id);
