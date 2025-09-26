@@ -7,11 +7,11 @@ dotenv.config();
 const {
     getAllData,
     getLatestData,
+    get24hData,
     insertData,
     deleteData
 } = require("../controllers/sensorsController");
 
-// Middleware to verify ESP secret
 function verifyEspSecret(req, res, next) {
     const token = req.headers["authorization"];
     if (token !== `Bearer ${process.env.ESP_SECRET}`) {
@@ -22,8 +22,7 @@ function verifyEspSecret(req, res, next) {
 
 router.get("/", getAllData);
 router.get("/latest", getLatestData);
-
-// Only ESP is allowed to insert or delete
+router.get("/24h", get24hData);
 router.post("/", verifyEspSecret, insertData);
 router.delete("/", verifyEspSecret, deleteData);
 

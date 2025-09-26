@@ -16,39 +16,130 @@
 <body>
   <div id="header"></div>
 
-  <table id="dataTable" border="1"></table>
+  <div class="container dashboard">
 
-  <div class="button-container">
-    <button onclick="deleteData()">Delete Data</button>
-    <button onclick="downloadJSONAsCSV('/api/sensors')">Download the Data</button>
-    <a href="/data" class="button">JSON Data</a>
+    <div class="card graph-card">
+      <h3>Light Sensor Overview</h3>
+      <canvas id="myChart"></canvas>
+    </div>
+
+    <div class="row">
+      <div class="card">
+        <h3>Latest Data</h3>
+        <div class="toolbar">
+          <button onclick="deleteData()">Delete</button>
+          <button onclick="downloadJSONAsCSV('/api/sensors')">Download</button>
+          <a href="/api/sensors" class="button">JSON</a>
+        </div>
+        <table id="dataTable" border="1"></table>
+      </div>
+
+      <div class="card">
+        <h3>Controls</h3>
+        <form id="lightForm" style="display:flex;flex-direction:row; gap:1rem; margin-bottom:1rem; flex-wrap:wrap;">
+          <div class="checkbox-container">
+            <input onclick="sendRequest()" type="checkbox" id="red" name="red" value="1" data-label="Red">
+          </div>
+          <div class="checkbox-container">
+            <input onclick="sendRequest()" type="checkbox" id="yellow" name="yellow" value="1" data-label="Yellow">
+          </div>
+          <div class="checkbox-container">
+            <input onclick="sendRequest()" type="checkbox" id="green" name="green" value="1" data-label="Green">
+          </div>
+        </form>
+
+        <form id="frqForm">
+          <label for="frq">Frequency:</label>
+          <input type="number" id="frq" name="frq" required>
+          <button type="submit">Set Frequency</button>
+        </form>
+      </div>
+    </div>
+    <div class="accordion">
+
+      <div class="accordion-item">
+        <button class="accordion-header">About the Project</button>
+        <div class="accordion-content">
+          <p>
+            This project uses an ESP32 to collect light, temperature, and humidity values. The data is sent securely to
+            a Node.js backend where it is stored in a database and displayed in real-time on this page.
+          </p>
+        </div>
+      </div>
+      <div class="accordion-item">
+        <button class="accordion-header">Website Overview</button>
+        <div class="accordion-content">
+          <p>
+            The chart in the Light Sensor Overview, shows the all the updates of the latest hour, and the last 23 hours
+            are shown in average every minute.
+            <br>
+            The light is measured in a range from 0 to 4100.
+            <br>
+            Latest Data shows the full data of the latest 3 updates.
+            <br>
+            Controls changes the state api, which the esp32 uses to change state. Depending on what has been marked on
+            the control colors.
+            <br>
+            Frequency changes the frequency of the buzzer, which is turned on the buttons.
+
+
+
+          </p>
+        </div>
+      </div>
+
+      <div class="accordion-item">
+        <button class="accordion-header">API Endpoints</button>
+        <div class="accordion-content">
+          <ul style="padding-left: 15px;">
+            <li><code>POST /api/sensors</code> – Submit new sensor data</li>
+            <li><code>GET /api/sensors</code> – Retrieve all stored data</li>
+            <li><code>GET /api/sensors/latest</code> – Get the most recent entries</li>
+            <li><code>DELETE /api/sensors</code> – Clear the database</li>
+            <li><code>GET /api/devices/state</code> – Get the current light states</li>
+            <li><code>POST /api/devices/light</code> – Update the light states</li>
+            <li><code>POST /api/devices/frq</code> – Set the buzzer frequency</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class=" accordion-item">
+        <button class="accordion-header">Setup</button>
+        <div class="accordion-content">
+          <p>
+            The ESP32 connects over Wi-Fi and posts data to the backend. Lights and a buzzer can be controlled
+            remotely
+            through the control panel above. Below is the physical setup:
+          </p>
+          <img src="/img/setup.jpg" alt="ESP32 Setup" style="max-width:100%; border-radius:8px;">
+        </div>
+      </div>
+
+      <div class="accordion-item">
+        <button class="accordion-header">Future Plans</button>
+        <div class="accordion-content">
+          <p>
+            The next element to be added will be a live camera. The purpose it show that shomething actually happens
+            when the control lights are pressed, in real time.
+            <br>
+            The camera opens up for more things. Such as having an input element on the website, where one can eneter
+            text, that can be displayed on a small oled screen, connected to the esp32.
+            <br>
+            Changing the communication between the esp32 and the website into MQTT, might make the transfer of data
+            faster, but it might also cause the esp to slow down a lot, as I have experienced previously using TCP
+            instead of the current polling.
+
+
+          </p>
+        </div>
+      </div>
+
+    </div>
+
   </div>
-  <div style="width: 100vw; height: 40vh;">
-    <canvas id="myChart" style="width: 100%; height: 100%;"></canvas>
-  </div>
-
-
-
-  <h3>Control Lights</h3>
-  <form id="lightForm" style="display:flex;flex-direction:row">
-    <div class="checkbox-container"><input onclick="sendRequest()" type="checkbox" id="red" name="red" value="1"
-        data-label="Red"></div>
-    <div class="checkbox-container"><input onclick="sendRequest()" type="checkbox" id="yellow" name="yellow" value="1"
-        data-label="Yellow"></div>
-    <div class="checkbox-container"><input onclick="sendRequest()" type="checkbox" id="green" name="green" value="1"
-        data-label="Green"></div>
-  </form>
-
-  <form id="frqForm" style="margin-top:1rem">
-    <label for="frq">Frequency:</label>
-    <input type="number" id="frq" name="frq" required>
-    <button type="submit">Set Frequency</button>
-  </form>
-
-  <button onclick="createSine()">Add sine data</button>
 
   <script src="/js/database.js"></script>
-  <script src="/js/index.js"></script>
+  <script src="/js/iot.js"></script>
   <script src="/js/graph.js"></script>
 </body>
 

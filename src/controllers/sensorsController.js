@@ -49,3 +49,42 @@ exports.deleteData = (req, res) => {
         if (err) console.error("Error resetting auto-increment:", err);
     });
 };
+
+
+exports.get24hData = (req, res) => {
+    const lastHourQuery = `
+    SELECT 
+      CONCAT(date_stamp, ' ', time_stamp) AS timestamp,
+      sensor_value AS value
+    FROM sensor_data
+    WHERE STR_TO_DATE(CONCAT(date_stamp, ' ', time_stamp), '%d/%m/%Y %H:%i:%s') >= NOW() - INTERVAL 1 HOUR
+    ORDER BY timestamp
+  `;
+
+    const perMinuteQuery = `
+    SELECT 
+      DATE_FORMAT(
+        STR_TO_DATE(CONCAT(date_stamp, ' ', time_stamp), '%d/%m/%Y %H:%i:%s'),
+        '%Y-%m-%d %H:%i:00'
+      ) AS minute,
+      AVG(sensor_value) AS avg_value
+    FROM sensor_data
+    WHERE STR_TO_DATE(CONCAT(date_stamp, ' ', time_stamp), '%d/%m/%Y %H:%i:%s') >= NOW() - INTERVAL 24 HOUR
+      AND STR_TO_DATE(CONCAT(date_stamp, ' ', time_stamp), '%d/%m/%Y %H:%i:%s') < NOW() - INTERVAL 1 HOUR
+    GROUP BY minute
+    ORDER BY minute
+  `;
+
+    db.query(lastHourQuery, (err, lastHourRows) => {
+        if (err) return res.status(500).send("DB error: last hour");
+
+        db.query(perMinuteQuery, (err2, perMinuteRows) => {
+            if (err2) return res.status(500).send("DB error: per minute");
+
+            res.json({
+                lastHour: lastHourRows,
+                perMinute: perMinuteRows
+            });
+        });
+    });
+};
